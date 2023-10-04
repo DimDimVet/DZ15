@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75bb588ceeb848b459a03531f768969d, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  SpeedMove: 30
+  SpeedMove: 5
   Force: 5
   Height: 5
   GroundLayer:

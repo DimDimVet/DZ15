@@ -1,22 +1,25 @@
-using Photon.Pun;
+using System;
 using UnityEngine;
-using Zenject;
+using UnityEngine.InputSystem;
 
-public class UserInput : MonoBehaviour
+public  class UserInput : MonoBehaviour
 {
-    //ѕодключаем к игроку, класс св€зка между системой управлени€ MapCurrent и классом Move и Camera
-    
+    //event
+    public static event Action<bool> OnEventMove;//’отим отправл€ть событи€ при факте движени€
+
     public InputData InputData;//ѕередадим данные
-    public bool DebugLogOnOff;//дл€ тестов
-    //ѕодключим класс MapCurrent(new input)
+    public bool DebugLogOnOff;//дл€ тестов //дл€ вывода в инспектор, временно
+
+    // эш переменной класса MapCurrent(new input)
     private MapCurrent inputAction;
 
-    void Start()
+    private bool isLook;
+    private void OnEnable()
     {
         inputAction = new MapCurrent();//инициализируем карту input
-        InputData=new InputData();
+        InputData = new InputData();
 
-        if (inputAction!=null)//проверим на null
+        if (inputAction != null)//проверим на null
         {
             //подпишем на event событи€ нажатий и значени€ присвоим локальным переменым
             inputAction.UIMap.WASD.performed += context => { InputData.Move = context.ReadValue<Vector2>(); };
@@ -42,19 +45,69 @@ public class UserInput : MonoBehaviour
             inputAction.Map.ModePlayer.performed += context => { InputData.Mode = context.ReadValue<float>(); };
             inputAction.Map.ModePlayer.started += context => { InputData.Mode = context.ReadValue<float>(); };
             inputAction.Map.ModePlayer.canceled += context => { InputData.Mode = context.ReadValue<float>(); };
+
             //запустим 
             inputAction.Enable();
+
+            //запустим дублирующие событи€ дл€ иных классов
+            inputAction.Map.WASD.performed += PerformedWASD;
+            inputAction.Map.WASD.started += PerformedWASD;
+            inputAction.Map.WASD.canceled += CanceledWASD;
+
+            inputAction.UIMap.WASD.performed += PerformedWASD;
+            inputAction.UIMap.WASD.started += PerformedWASD;
+            inputAction.UIMap.WASD.canceled += CanceledWASD;
+
+            inputAction.Map.Look.performed += PerformedLook;
+            inputAction.Map.Look.started += PerformedLook;
+            inputAction.Map.Look.canceled += CanceledLook;
+
         }
         else
         {
             Debug.LogError("Ќет св€зи с классом MapCurrent");
         }
-        
     }
+
+    //если есть событи€ WASD то создадим событие
+    private void PerformedWASD(InputAction.CallbackContext context)
+    {
+        if (context.ReadValue<Vector2>()!=null)
+        {
+            OnEventMove?.Invoke(true);
+        }
+    }
+    //если событие WASD закончилось то создадим событие
+    private void CanceledWASD(InputAction.CallbackContext context)
+    {
+        if (context.ReadValue<Vector2>() != null && isLook==false)
+        {
+            OnEventMove?.Invoke(false);
+        }
+    }
+
+    //если есть событи€ Look то создадим событие
+    private void PerformedLook(InputAction.CallbackContext context)
+    {
+        if (context.ReadValue<Vector2>() != null)
+        {
+            isLook = true;
+            OnEventMove?.Invoke(true);
+        }
+    }
+    //если событие Look закончилось то создадим событие
+    private void CanceledLook(InputAction.CallbackContext context)
+    {
+        if (context.ReadValue<Vector2>() != null)
+        {
+            isLook=false;
+        }
+    }
+
 
     void Update()
     {
-        if (DebugLogOnOff)
+        if (DebugLogOnOff)//дл€ вывода в инспектор, временно
         {
             Debug.Log($"ƒвижение ’ = {InputData.Move.x}, ƒвижение Y = {InputData.Move.y}");
             Debug.Log($"ћышь ’ = {InputData.Mouse.x}, ћышь Y = {InputData.Mouse.y}");
