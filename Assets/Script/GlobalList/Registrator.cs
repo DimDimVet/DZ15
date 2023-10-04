@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using UnityEngine;
 
 public class Registrator : MonoBehaviour
@@ -22,15 +23,18 @@ public class Registrator : MonoBehaviour
     [Header("Загрузить скрипт PhotonView")]
     [SerializeField] private PhotonView _photonView;
 
-    //private IRegistrator dataReg;
-    private RegistratorConstruction registrator;
+    //event
+    /// <summary>
+    /// Событие на отправку экземпляра RegistratorConstruction
+    /// </summary>
+    public static event Action<RegistratorConstruction> OnSetData;
 
     private void Start()
     {
-        //dataReg = new RegistratorExecutor();
-        registrator = new RegistratorConstruction
+        //соберем экземпляр объекта
+        RegistratorConstruction registrator = new RegistratorConstruction
         {
-            IsDestroyGO = false,
+            IsDestroyGO = false,//&&
             Hash = gameObject.GetHashCode(),
             HealtObj = _healt,
             PlayerHealt = _playerHealt,
@@ -52,10 +56,14 @@ public class Registrator : MonoBehaviour
             }
         }
 
-        EventRegistrator.OnSetData(registrator);//создали событие
-
-
-        //dataReg.SetData(registrator);
+        SetData(registrator);//создали событие
+    }
+    private void SetData(RegistratorConstruction registratorConstruction)
+    {
+        if (registratorConstruction.Hash!=0)
+        {
+            OnSetData?.Invoke(registratorConstruction);
+        }
     }
 
 }

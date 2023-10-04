@@ -1,8 +1,12 @@
-using Photon.Pun;
+using System;
 using UnityEngine;
 
 public class PickUpItem : MonoBehaviour
 {
+    //event
+    public static event Func<int,RegistratorConstruction> OnGetData;
+    public static event Func<RegistratorConstruction> OnInventory;
+    public static event Func<RegistratorConstruction> OnGetNetManager;
 
     public PickSettings PickSettings;
     [SerializeField] private GameObject objectImg;
@@ -10,7 +14,6 @@ public class PickUpItem : MonoBehaviour
 
     private Collider collaider;
 
-    private IRegistrator dataReg;
     private RegistratorConstruction rezultList;
     private RegistratorConstruction rezultGrid;
     private RegistratorConstruction rezultNetManager;
@@ -19,6 +22,19 @@ public class PickUpItem : MonoBehaviour
         collaider = gameObject.GetComponent<Collider>();
         collaider.isTrigger = true;
 
+    }
+
+    private RegistratorConstruction GetData(int hash)
+    {
+        return (RegistratorConstruction)(OnGetData?.Invoke(hash));
+    }
+    private RegistratorConstruction Inventory()
+    {
+        return (RegistratorConstruction)(OnInventory?.Invoke());
+    }
+    private RegistratorConstruction GetNetManager()
+    {
+        return (RegistratorConstruction)(OnGetNetManager?.Invoke());
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -34,10 +50,9 @@ public class PickUpItem : MonoBehaviour
     }
     private void ExecutorCollision(int hash)
     {
-        dataReg = new RegistratorExecutor();//доступ к листу
-        rezultList = dataReg.GetData(hash);
+        rezultList = GetData(hash);
 
-        rezultGrid = dataReg.Inventory();
+        rezultGrid = Inventory();
         objectGrid= rezultGrid.ControlInventory.gameObject;
         //Healt
        
@@ -58,8 +73,7 @@ public class PickUpItem : MonoBehaviour
 
     public void DestoyGO()
     {
-        dataReg = new RegistratorExecutor();//доступ к листу
-        rezultNetManager = dataReg.NetManager();
+        rezultNetManager = GetNetManager();
         rezultNetManager.NetworkManager.DestroyThisLut(this.gameObject);
     }
 }

@@ -1,100 +1,129 @@
-using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class RegistratorExecutor : MonoBehaviour
 {
-    void Start()
+    private void OnEnable()
     {
-        EventRegistrator.SetData.AddListener(SetData);//подписка
+        Registrator.OnSetData+=SetData;//подпишемся на поллучение объектов при инициализации
+        MovePlayer.OnGetDataPlayer+=GetDataPlayer;//подпишемся на запрос поиска объектов Player
+        MovePlayer.OnGetDataCamera+=GetDataCamera;//подпишемся на запрос поиска объектов Camera
+        CameraMove.OnGetDataPlayer+=GetDataPlayer;//подпишемся на запрос поиска объектов Player
+        Healt.OnGetNetManager+=NetManager;//подпишемся на запрос поиска объектов NetManager
+        PickUpItem.OnGetNetManager += NetManager;//подпишемся на запрос поиска объектов NetManager
+        PickUpItem.OnGetData+=GetData; //подпишемся на запрос поиска объектов GetData
+        PickUpItem.OnInventory+=Inventory;//подпишемся на запрос поиска объектов Inventory
+        PlayerHealt.OnGetNetManager+=NetManager;//подпишемся на запрос поиска объектов NetManager
+        CountText.OnGetDataPlayer+=GetDataPlayer;//подпишемся на запрос поиска объектов Player
+        NetworkManager.OnGetDataList+=GetDataList;//подпишемся на запрос поиска объектов GetDataList
+        PullPlayer.OnGetDataPlayer +=GetDataPlayer;//подпишемся на запрос поиска объектов Player
+        ShootPlayer.OnGetDataPlayer +=GetDataPlayer;//подпишемся на запрос поиска объектов Player
+        ShootPlayer.OnGetNetManager +=NetManager;//подпишемся на запрос поиска объектов NetManager
+        AnimPlayer.OnGetDataPlayer+=GetDataPlayer;//подпишемся на запрос поиска объектов Player
+        Bull.OnGetData+=GetData;//подпишемся на запрос поиска объектов GetData
+    }
+    private void OnDisable()//отписки
+    {
+        Registrator.OnSetData-=SetData;
+        MovePlayer.OnGetDataPlayer-=GetDataPlayer;
+        MovePlayer.OnGetDataCamera-=GetDataCamera;
+        CameraMove.OnGetDataPlayer-=GetDataPlayer;
+        Healt.OnGetNetManager-=NetManager;
+        PickUpItem.OnGetNetManager -= NetManager;
+        PickUpItem.OnGetData-=GetData;
+        PickUpItem.OnInventory-=Inventory;
+        CountText.OnGetDataPlayer-=GetDataPlayer;
+        NetworkManager.OnGetDataList-=GetDataList;
+        PullPlayer.OnGetDataPlayer -=GetDataPlayer;
+        ShootPlayer.OnGetDataPlayer -=GetDataPlayer;
+        ShootPlayer.OnGetNetManager -=NetManager;
+        AnimPlayer.OnGetDataPlayer-=GetDataPlayer;
+        Bull.OnGetData-=GetData;
     }
 
-    public Transform OutPos { get; set; }
+    //private Transform OutPos { get; set; }
 
-    
     private void SetData(RegistratorConstruction data)
     {
-        GlobalList.DataObject.Add(data);
+        RegistratorList.DataObjects.Add(data);
     }
 
-    public List<RegistratorConstruction> GetDataList()
+    private List<RegistratorConstruction> GetDataList()
     {
-        return GlobalList.DataObject;
+        return RegistratorList.DataObjects;
     }
 
-    public RegistratorConstruction GetData(int hash)
+    private RegistratorConstruction GetData(int hash)
     {
-        for (int i = 0; i < GlobalList.DataObject.Count; i++)
+        for (int i = 0; i < RegistratorList.DataObjects.Count; i++)
         {
-            if (GlobalList.DataObject[i].Hash == hash)
+            if (RegistratorList.DataObjects[i].Hash == hash)
             {
-                return GlobalList.DataObject[i];
+                return RegistratorList.DataObjects[i];
             }
         }
         return new RegistratorConstruction();
     }
 
-    public RegistratorConstruction GetDataCamera()
+    private RegistratorConstruction GetDataCamera()
     {
-        for (int i = 0; i < GlobalList.DataObject.Count; i++)
+        for (int i = 0; i < RegistratorList.DataObjects.Count; i++)
         {
-            if (GlobalList.DataObject[i].CameraMove != null)
+            if (RegistratorList.DataObjects[i].CameraMove != null)
             {
-                return GlobalList.DataObject[i];
+                return RegistratorList.DataObjects[i];
             }
         }
         return new RegistratorConstruction();
     }
 
-    public RegistratorConstruction GetDataPlayer()
+    private RegistratorConstruction GetDataPlayer()
     {
-        for (int i = 0; i < GlobalList.DataObject.Count; i++)
+        for (int i = 0; i < RegistratorList.DataObjects.Count; i++)
         {
-            if (GlobalList.DataObject[i].PhotonIsMainGO && GlobalList.DataObject[i].UserInput!=null)
+            if (RegistratorList.DataObjects[i].PhotonIsMainGO && RegistratorList.DataObjects[i].UserInput!=null)
             {
-                return GlobalList.DataObject[i];
+                return RegistratorList.DataObjects[i];
             }
         }
         return new RegistratorConstruction();
     }
-    public RegistratorConstruction NetManager()
+    private RegistratorConstruction NetManager()
     {
-        for (int i = 0; i < GlobalList.DataObject.Count; i++)
+        for (int i = 0; i < RegistratorList.DataObjects.Count; i++)
         {
-            if (GlobalList.DataObject[i].NetworkManager !=null)
+            if (RegistratorList.DataObjects[i].NetworkManager !=null)
             {
-                return GlobalList.DataObject[i];
-            }
-        }
-        return new RegistratorConstruction();
-    }
-
-    public RegistratorConstruction Inventory()
-    {
-        for (int i = 0; i < GlobalList.DataObject.Count; i++)
-        {
-            if (GlobalList.DataObject[i].ControlInventory != null)
-            {
-                return GlobalList.DataObject[i];
+                return RegistratorList.DataObjects[i];
             }
         }
         return new RegistratorConstruction();
     }
 
-    public void DestroyObject(RegistratorConstruction go)
+    private RegistratorConstruction Inventory()
+    {
+        for (int i = 0; i < RegistratorList.DataObjects.Count; i++)
+        {
+            if (RegistratorList.DataObjects[i].ControlInventory != null)
+            {
+                return RegistratorList.DataObjects[i];
+            }
+        }
+        return new RegistratorConstruction();
+    }
+
+    private void DestroyObject(RegistratorConstruction go)
     {
         RegistratorConstruction tempGO = new RegistratorConstruction();
         tempGO = go;
         tempGO.IsDestroyGO = true;
 
-        for (int i = 0; i < GlobalList.DataObject.Count; i++)
+        for (int i = 0; i < RegistratorList.DataObjects.Count; i++)
         {
-            if (GlobalList.DataObject[i].PhotonHash == tempGO.PhotonHash)
+            if (RegistratorList.DataObjects[i].PhotonHash == tempGO.PhotonHash)
             {
-                GlobalList.DataObject.Remove(tempGO);
-            }  
+                RegistratorList.DataObjects.Remove(tempGO);
+            }
         }
     }
 }

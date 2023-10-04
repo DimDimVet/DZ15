@@ -1,22 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 public class CountText : MonoBehaviour
 {
+    //event
+    public static event Func<RegistratorConstruction> OnGetDataPlayer;
+
     [SerializeField] private Text textHealt;
     [SerializeField] private Text textCountBull;
 
-    private IRegistrator dataReg;
     private RegistratorConstruction rezultListPlayer;
 
     private bool isRun;
     void Start()
     {
-        dataReg = new RegistratorExecutor();//доступ к листу
-        rezultListPlayer = dataReg.GetDataPlayer();
+        rezultListPlayer = GetInput();
+    }
+    private RegistratorConstruction GetInput()
+    {
+        return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
     }
 
     void Update()
@@ -25,7 +28,7 @@ public class CountText : MonoBehaviour
         //ищем если не нашли
         if (isRun == false)
         {
-            rezultListPlayer = dataReg.GetDataPlayer();
+            rezultListPlayer = GetInput();
             if (rezultListPlayer.PhotonIsMainGO)
             {
                 if (rezultListPlayer.UserInput != null)

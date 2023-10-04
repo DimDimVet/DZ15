@@ -1,59 +1,68 @@
 using Photon.Pun;
-using System.ComponentModel;
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 
 public class MovePlayer : MonoBehaviour
 {
+    //event
+    public static event Func<RegistratorConstruction> OnGetDataPlayer;
+    public static event Func<RegistratorConstruction> OnGetDataCamera;
+
     [SerializeField] private MoveSettings moveSettings;
     [SerializeField] private Transform cameraPoint;
 
-    private IRegistrator dataReg;
     private RegistratorConstruction rezultListCamera;
     private RegistratorConstruction rezultListInput;
 
     private float speedMove;
     private Transform transformCamera;
     private float2 angleCamera;
+    private Vector3 currentPosition;
+    private int gg;
 
     private bool isRun;
     void Start()
     {
         speedMove = moveSettings.SpeedMove;
         //ищем камеру и управление
-        dataReg = new RegistratorExecutor();//доступ к листу
-        rezultListInput = dataReg.GetDataPlayer();
-        rezultListCamera = dataReg.GetDataCamera();
+        rezultListInput = GetInput();
+        rezultListCamera = GetCamera();
 
     }
 
-    void Update()
+    private RegistratorConstruction GetInput()
     {
+        return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
+    }
+    private RegistratorConstruction GetCamera()
+    {
+        return (RegistratorConstruction)(OnGetDataCamera?.Invoke());
+    }
 
+    private void Move()
+    {
         //ищем если не нашли
         if (isRun == false)
         {
-            rezultListInput = dataReg.GetDataPlayer();
-            if (rezultListInput.PhotonIsMainGO)
-            {
-                if (rezultListInput.UserInput != null)
-                {
-                    isRun = rezultListInput.PhotonIsMainGO;
-                }
-            }
+            rezultListInput = GetInput();
 
+            if (rezultListInput.UserInput != null)
+            {
+                isRun=true;
+            }
         }
+
 
         if (PhotonView.Get(this.gameObject).IsMine && isRun)/*PhotonView.Get(this.gameObject).IsMine*/
         {
             //ищем если не нашли
             if (rezultListCamera.CameraMove == null)
             {
-                rezultListCamera = dataReg.GetDataCamera();
+                rezultListCamera = GetCamera();
+
                 return;
             }
-
-
 
             rezultListCamera.CameraMove.GetTransformPointCamera = transformCamera;
             angleCamera = rezultListCamera.CameraMove.AngleCamera;
@@ -64,30 +73,33 @@ public class MovePlayer : MonoBehaviour
 
             if (rezultListInput.UserInput.InputData.Move.y > 0)
             {
-                Vector3 currentPosition = transform.position;
+                currentPosition = transform.position;
                 currentPosition += transform.forward / speedMove;
                 transform.position = currentPosition;
             }
             if (rezultListInput.UserInput.InputData.Move.y < 0)
             {
-                Vector3 currentPosition = transform.position;
+                currentPosition = transform.position;
                 currentPosition -= transform.forward / speedMove;
                 transform.position = currentPosition;
             }
 
             if (rezultListInput.UserInput.InputData.Move.x > 0)
             {
-                Vector3 currentPosition = transform.position;
+                currentPosition = transform.position;
                 currentPosition += transform.right / speedMove;
                 transform.position = currentPosition;
             }
             if (rezultListInput.UserInput.InputData.Move.x < 0)
             {
-                Vector3 currentPosition = transform.position;
+                currentPosition = transform.position;
                 currentPosition -= transform.right / speedMove;
                 transform.position = currentPosition;
             }
         }
+    }
+    private void FixedUpdate()
+    {
 
     }
 }

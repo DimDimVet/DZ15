@@ -13,7 +13,6 @@ public class UserInput : MonoBehaviour
 
     void Start()
     {
-
         inputAction = new MapCurrent();//инициализируем карту input
         InputData=new InputData();
 

@@ -1,10 +1,14 @@
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
+    //event
+    public static event Func<List<RegistratorConstruction>> OnGetDataList;
+
     public GameObject PlayerSample;
     public List<Transform> SpawnPonts;
     private int id;
@@ -12,7 +16,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public List<GameObject> InterObject;
     public List<Transform> InterTransformObject;
 
-    private IRegistrator dataReg;
     private List<RegistratorConstruction> rezultList;
 
     private GameObject tempDestroy;
@@ -23,6 +26,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     void Awake()
     {
         PhotonNetwork.ConnectUsingSettings();//запустим тестовый мастер-сервер
+    }
+
+    private List<RegistratorConstruction> GetDataList()
+    {
+        return (List<RegistratorConstruction>)(OnGetDataList?.Invoke());
     }
 
     //возьмем в родителе OnConnectedToMaster() для создания тестового мастер-сервера
@@ -99,8 +107,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [PunRPC]//для того чтоб фотон знал о данном методе
     public void DestroyGO(int go)
     {
-        dataReg = new RegistratorExecutor();//доступ к листу
-        rezultList = dataReg.GetDataList();
+        rezultList = GetDataList();
 
         for (int i = 0; i < rezultList.Count; i++)
         {
@@ -140,8 +147,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [PunRPC]//для того чтоб фотон знал о данном методе
     public void DestroyLut(int go)
     {
-        dataReg = new RegistratorExecutor();//доступ к листу
-        rezultList = dataReg.GetDataList();
+        rezultList = GetDataList();
 
         for (int i = 0; i < rezultList.Count; i++)
         {

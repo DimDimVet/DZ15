@@ -1,8 +1,12 @@
+using System;
 using UnityEngine;
 
 
 public class Bull : MonoBehaviour
 {
+    //event
+    public static event Func<int, RegistratorConstruction> OnGetData;
+
     public bool isSet = false;
 
     [SerializeField] private ParticleSystem particleSys;
@@ -10,7 +14,6 @@ public class Bull : MonoBehaviour
     [SerializeField] private BullSettings bullSettings;
 
     private int hashGO;
-    private IRegistrator dataReg;
     private RegistratorConstruction rezultListGO;
 
     [SerializeField] private GameObject decalGO;
@@ -46,7 +49,10 @@ public class Bull : MonoBehaviour
 
         InstDecal();
     }
-
+    private RegistratorConstruction GetData(int hash)
+    {
+        return (RegistratorConstruction)(OnGetData?.Invoke(hash));
+    }
     private void InstDecal()
     {
         decal = Instantiate(decalGO);
@@ -150,8 +156,8 @@ public class Bull : MonoBehaviour
     {
         //ищем объект
         hashGO = hit.collider.gameObject.GetHashCode();
-        dataReg = new RegistratorExecutor();//доступ к листу
-        rezultListGO = dataReg.GetData(hashGO);
+
+        rezultListGO = GetData(hashGO);
 
         //Healt
         if (rezultListGO.Hash == hashGO)

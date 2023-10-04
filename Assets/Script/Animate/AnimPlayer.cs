@@ -1,12 +1,15 @@
 using Photon.Pun;
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 
 public class AnimPlayer : MonoBehaviour
 {
+    //event
+    public static event Func<RegistratorConstruction> OnGetDataPlayer;
+
     [SerializeField] private AnimSettings animSettings;
 
-    private IRegistrator dataReg;
     private RegistratorConstruction rezultListInput;
 
     //anim
@@ -25,8 +28,7 @@ public class AnimPlayer : MonoBehaviour
     {
         animator = gameObject.GetComponent<Animator>();
         //ищем управление
-        dataReg = new RegistratorExecutor();//доступ к листу
-        rezultListInput = dataReg.GetDataPlayer();
+        rezultListInput = GetInput();
 
         speed = animSettings.Speed;
         animSpeed = animSettings.AnimSpeed;
@@ -35,6 +37,10 @@ public class AnimPlayer : MonoBehaviour
 
     }
 
+    private RegistratorConstruction GetInput()
+    {
+        return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
+    }
     private bool ControlGO()
     {
 
@@ -54,7 +60,7 @@ public class AnimPlayer : MonoBehaviour
         //ищем если не нашли
         if (isRun == false)
         {
-            rezultListInput = dataReg.GetDataPlayer();
+            rezultListInput = GetInput();
             if (rezultListInput.PhotonIsMainGO)
             {
                 if (rezultListInput.UserInput != null)
@@ -68,7 +74,7 @@ public class AnimPlayer : MonoBehaviour
         {
             if (rezultListInput.PhotonIsMainGO == false)
             {
-                rezultListInput = dataReg.GetDataPlayer();
+                rezultListInput = GetInput();
                 return;
             }
 

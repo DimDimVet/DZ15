@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ControlInventory : MonoBehaviour
 {
+    //event
+    public static event Func<RegistratorConstruction> OnGetDataPlayer;
+
     public Transform gridTransform;
     public int GridPlater;
     [SerializeField] private Button openCanvasButton;
     [SerializeField] private Button closeCanvasButton;
     [SerializeField] private Canvas canvas;
 
-    private IRegistrator dataReg;
     private RegistratorConstruction rezultListInput;
     private bool isRun;
     private float2 inputMouse;
@@ -24,8 +25,12 @@ public class ControlInventory : MonoBehaviour
         canvas.gameObject.SetActive(false);
         openCanvasButton.gameObject.SetActive(true);
 
-        dataReg = new RegistratorExecutor();//доступ к листу
-        rezultListInput = dataReg.GetDataPlayer();
+        rezultListInput = GetInput();
+    }
+
+    private RegistratorConstruction GetInput()
+    {
+        return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
     }
 
     private void Update()
@@ -33,7 +38,7 @@ public class ControlInventory : MonoBehaviour
         //ищем если не нашли
         if (isRun == false)
         {
-            rezultListInput = dataReg.GetDataPlayer();
+            rezultListInput = GetInput();
             if (rezultListInput.PhotonIsMainGO)
             {
                 if (rezultListInput.UserInput != null)

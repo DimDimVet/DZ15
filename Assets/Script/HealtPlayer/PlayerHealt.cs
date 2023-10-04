@@ -1,19 +1,17 @@
-using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class PlayerHealt : MonoBehaviour
 {
+    //event
+    public static event Func<RegistratorConstruction> OnGetNetManager;
+
     [SerializeField] private HealtSetting settingsData;
 
     [HideInInspector] public int HealtCount;
     [HideInInspector] public int Damage;
     [HideInInspector] public bool Dead = false;
 
-    //private bool isOneTriger = true;
-
-    private IRegistrator dataReg;
     private RegistratorConstruction rezultNetManager;
     void Start()
     {
@@ -21,6 +19,11 @@ public class PlayerHealt : MonoBehaviour
         {
             HealtCount = settingsData.Healt;
         }
+    }
+
+    private RegistratorConstruction GetNetManager()
+    {
+        return (RegistratorConstruction)(OnGetNetManager?.Invoke());
     }
 
     void Update()
@@ -41,8 +44,7 @@ public class PlayerHealt : MonoBehaviour
 
     public void DestoyGO()
     {
-        dataReg = new RegistratorExecutor();//доступ к листу
-        rezultNetManager = dataReg.NetManager();
+        rezultNetManager = GetNetManager();
         rezultNetManager.NetworkManager.DestroyThisGO(this.gameObject);
     }
 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028328, g: 0.22571322, b: 0.30692163, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -351,7 +351,7 @@ MonoBehaviour:
   _userInput: {fileID: 0}
   _controlInventory: {fileID: 0}
   _pickUpItem: {fileID: 0}
-  _networkManager: {fileID: 0}
+  _networkManager: {fileID: 179129838}
   _photonView: {fileID: 0}
 --- !u!114 &179129842
 MonoBehaviour:
@@ -1373,6 +1373,14 @@ PrefabInstance:
       propertyPath: _photonView
       value: 
       objectReference: {fileID: 1142509774}
+    - target: {fileID: 2392829252395131483, guid: 982320c966d15da44aae47d89176e199, type: 3}
+      propertyPath: _playerHealt
+      value: 
+      objectReference: {fileID: 1626498988}
+    - target: {fileID: 2392829252395131483, guid: 982320c966d15da44aae47d89176e199, type: 3}
+      propertyPath: _shootPlayer
+      value: 
+      objectReference: {fileID: 1626498989}
     - target: {fileID: 2392829252395131491, guid: 982320c966d15da44aae47d89176e199, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1639,6 +1647,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1626498988 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2392829252395131472, guid: 982320c966d15da44aae47d89176e199, type: 3}
+  m_PrefabInstance: {fileID: 1315571425}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 796f41f1dfced044ca41474503d7447d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1626498989 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2392829252395131473, guid: 982320c966d15da44aae47d89176e199, type: 3}
+  m_PrefabInstance: {fileID: 1315571425}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff1025939e513d49a76379596970ff2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1634167675
 GameObject:
   m_ObjectHideFlags: 0
@@ -2090,7 +2120,7 @@ MonoBehaviour:
   _healt: {fileID: 0}
   _playerHealt: {fileID: 0}
   _shootPlayer: {fileID: 0}
-  _cameraMove: {fileID: 0}
+  _cameraMove: {fileID: 7751382500551418375}
   _userInput: {fileID: 0}
   _controlInventory: {fileID: 0}
   _pickUpItem: {fileID: 0}
@@ -3318,7 +3348,7 @@ MonoBehaviour:
   _shootPlayer: {fileID: 0}
   _cameraMove: {fileID: 0}
   _userInput: {fileID: 0}
-  _controlInventory: {fileID: 0}
+  _controlInventory: {fileID: 8504556697074888126}
   _pickUpItem: {fileID: 0}
   _networkManager: {fileID: 0}
   _photonView: {fileID: 0}

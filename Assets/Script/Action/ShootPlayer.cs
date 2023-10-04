@@ -1,14 +1,17 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ShootPlayer : MonoBehaviour
 {
+    //event
+    public static event Func<RegistratorConstruction> OnGetDataPlayer;
+    public static event Func<RegistratorConstruction> OnGetNetManager;
     //
     [SerializeField] private ActionSettings actionSettings;
     //
-    private IRegistrator dataReg;
     private RegistratorConstruction rezultListInput;
     private RegistratorConstruction rezulNetManager;
 
@@ -30,17 +33,24 @@ public class ShootPlayer : MonoBehaviour
     private void Start()
     {
         //ищем управление
-        dataReg = new RegistratorExecutor();//доступ к листу
-        rezultListInput = dataReg.GetDataPlayer();
-        rezulNetManager = dataReg.NetManager();
+        rezultListInput = GetInput();
+        rezulNetManager = GetNetManager();
 
-        dataReg.OutPos = outBullet;
+        //dataReg.OutPos = outBullet;
         shootDelay =actionSettings.ShootDelay;
 
         InstBulls(10);
 
         StartCoroutine(Example());
 
+    }
+    private RegistratorConstruction GetInput()
+    {
+        return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
+    }
+    private RegistratorConstruction GetNetManager()
+    {
+        return (RegistratorConstruction)(OnGetNetManager?.Invoke());
     }
 
     private void InstBulls(int count)
@@ -63,7 +73,7 @@ public class ShootPlayer : MonoBehaviour
         {
             if (rezultListInput.UserInput == null)
             {
-                rezultListInput = dataReg.GetDataPlayer();
+                rezultListInput = GetInput();
                 return;
             }
 
@@ -105,13 +115,5 @@ public class ShootPlayer : MonoBehaviour
                 return;
             }
         }
-
-
-        //Instantiate(bullet, outBullet.position, outBullet.rotation);
-        //rezulNetManager.NetworkManager.BullInst(outBullet);
-        //gunExitParticle.Play();
-        //Photon
-        
-
     }
 }

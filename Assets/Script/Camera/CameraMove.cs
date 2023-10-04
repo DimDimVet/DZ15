@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class CameraMove : MonoBehaviour
 {
+    //event
+    public static event Func<RegistratorConstruction> OnGetDataPlayer;
 
     [HideInInspector] public float2 AngleCamera;
     [HideInInspector] public Transform GetTransformPointCamera;
     //
     [SerializeField] private CameraSettings cameraSettings;
 
-    private IRegistrator dataReg;
     private RegistratorConstruction rezultListInput;
 
     private float2 inputMouse;
@@ -29,16 +30,20 @@ public class CameraMove : MonoBehaviour
         maxStopAngle = cameraSettings.MaxStopAngle;
 
         //Найдем источника мыши управления камерой
-        dataReg = new RegistratorExecutor();//доступ к листу
-        rezultListInput = dataReg.GetDataPlayer();
-
+        rezultListInput = GetInput();
     }
+
+    private RegistratorConstruction GetInput()
+    {
+        return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
+    }
+
     void Update()
     {
         //ищем если не нашли
         if (isRun == false)
         {
-            rezultListInput = dataReg.GetDataPlayer();
+            rezultListInput = GetInput();
             if (rezultListInput.PhotonIsMainGO)
             {
                 if (rezultListInput.UserInput != null)

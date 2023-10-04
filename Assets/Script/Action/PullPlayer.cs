@@ -1,13 +1,15 @@
 using Photon.Pun;
+using System;
 using UnityEngine;
 using Zenject;
 
 public class PullPlayer : MonoBehaviour
 {
-                                        //
+    //event
+    public static event Func<RegistratorConstruction> OnGetDataPlayer;
+
     [SerializeField] private MoveSettings moveSettings;
 
-    private IRegistrator dataReg;
     private RegistratorConstruction rezultListInput;
 
     public Transform[] PointGnd;
@@ -27,18 +29,21 @@ public class PullPlayer : MonoBehaviour
         shootDelay= moveSettings.ShootDelay;
 
         //ищем управление
-        dataReg = new RegistratorExecutor();//доступ к листу
-        rezultListInput = dataReg.GetDataPlayer();
+        rezultListInput = GetInput();
 
     }
 
+    private RegistratorConstruction GetInput()
+    {
+        return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
+    }
     void Update()
     {
         if (PhotonView.Get(this.gameObject).IsMine)
         {
             if (rezultListInput.UserInput == null)
             {
-                rezultListInput = dataReg.GetDataPlayer();
+                rezultListInput = GetInput();
                 return;
             }
 
