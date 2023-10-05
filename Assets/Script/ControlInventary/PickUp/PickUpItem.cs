@@ -58,16 +58,16 @@ public class PickUpItem : MonoBehaviour
        
         if (rezultGrid.ControlInventory != null)
         {
-            Debug.Log("Лут взял - "+ rezultList.PhotonHash);
-            if (rezultGrid.ControlInventory.GridPlater == rezultList.PhotonHash)
-            {
-                GameObject.Instantiate(objectImg, rezultGrid.ControlInventory.gridTransform);
-            }
+            //Debug.Log("Лут взял - "+ rezultList.PhotonHash);
+            //if (rezultGrid.ControlInventory.GridPlater == rezultList.PhotonHash)
+            //{
+            //    GameObject.Instantiate(objectImg, rezultGrid.ControlInventory.gridTransform);
+            //}
             
         }
         else
         {
-            Debug.Log("No Script" + rezultList.Name);
+            //Debug.Log("No Script" + rezultList.Name);
         }
     }
 

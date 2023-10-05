@@ -1,69 +1,37 @@
 using Photon.Pun;
-using System;
 using UnityEngine;
+using static EventManager;
 
 public class Registrator : MonoBehaviour
 {
-    [Header("Загрузить скрипт Healt")]
-    [SerializeField] private Healt _healt;
-    [Header("Загрузить скрипт PlayerHealt")]
-    [SerializeField] private PlayerHealt _playerHealt;
-    [Header("Загрузить скрипт ShootPlayer")]
-    [SerializeField] private ShootPlayer _shootPlayer;
-    [Header("Загрузить скрипт CameraMove")]
-    [SerializeField] private CameraMove _cameraMove;
-    [Header("Загрузить скрипт UserInput")]
-    [SerializeField] private UserInput _userInput;
-    [Header("Загрузить скрипт ControlInventory")]
-    [SerializeField] private ControlInventory _controlInventory;
-    [Header("Загрузить скрипт PickUpItem")]
-    [SerializeField] private PickUpItem _pickUpItem;
-    [Header("Загрузить скрипт NetworkManager")]
-    [SerializeField] private NetworkManager _networkManager;
-    [Header("Загрузить скрипт PhotonView")]
-    [SerializeField] private PhotonView _photonView;
-
-    //event
-    /// <summary>
-    /// Событие на отправку экземпляра RegistratorConstruction
-    /// </summary>
-    public static event Action<RegistratorConstruction> OnSetData;
+    [Header("Загрузить текущий объект")]
+    [SerializeField] private MonoBehaviour thisGO;
 
     private void Start()
     {
-        //соберем экземпляр объекта
-        RegistratorConstruction registrator = new RegistratorConstruction
+        if (thisGO==null)
         {
-            IsDestroyGO = false,//&&
-            Hash = gameObject.GetHashCode(),
-            HealtObj = _healt,
-            PlayerHealt = _playerHealt,
-            ShootPlayer = _shootPlayer,
-            CameraMove = _cameraMove,
-            UserInput = _userInput,
-            ControlInventory= _controlInventory,
-            PickUpItem = _pickUpItem,
-            NetworkManager = _networkManager,
-            PhotonView = _photonView
-        };
-
-        if (PhotonView.Get(this.gameObject) is PhotonView)
-        {
-            if (registrator.NetworkManager == null)
+            thisGO = gameObject.GetComponent<MonoBehaviour>();
+            if (thisGO == null)
             {
-                registrator.PhotonHash = PhotonView.Get(this.gameObject).ViewID;
-                registrator.PhotonIsMainGO = PhotonView.Get(this.gameObject).IsMine;
+                return;
             }
         }
+        //соберем экземпляр объекта
+        RegistratorConstruction registrator = new RegistratorConstruction();
 
-        SetData(registrator);//создали событие
-    }
-    private void SetData(RegistratorConstruction registratorConstruction)
-    {
-        if (registratorConstruction.Hash!=0)
-        {
-            OnSetData?.Invoke(registratorConstruction);
-        }
+        if (registrator.Hash ==0) { registrator.Hash = GetHashCode(); }
+        if (thisGO is Healt) { registrator.Healt = (Healt)thisGO; }
+        if (thisGO is ControlInventory) {registrator.ControlInventory = (ControlInventory)thisGO; }
+        if (thisGO is PlayerHealt) { registrator.PlayerHealt = (PlayerHealt)thisGO; }
+        if (thisGO is ShootPlayer) { registrator.ShootPlayer = (ShootPlayer)thisGO; }
+        if (thisGO is CameraMove) { registrator.CameraMove = (CameraMove)thisGO; }
+        if (thisGO is UserInput) { registrator.UserInput = (UserInput)thisGO; }
+        if (thisGO is NetworkManager) { registrator.NetworkManager = (NetworkManager)thisGO; }
+        if (thisGO is PickUpItem) { registrator.PickUpItem = (PickUpItem)thisGO; }
+        if (thisGO is PhotonView) { registrator.PhotonView = (PhotonView)thisGO; }
+
+        SetData(registrator);//записали в лист
     }
 
 }

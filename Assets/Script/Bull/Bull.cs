@@ -162,9 +162,9 @@ public class Bull : MonoBehaviour
         //Healt
         if (rezultListGO.Hash == hashGO)
         {
-            if (rezultListGO.HealtObj != null)
+            if (rezultListGO.Healt != null)
             {
-                rezultListGO.HealtObj.Damage = damage;
+                rezultListGO.Healt.Damage = damage;
             }
             if (rezultListGO.PlayerHealt != null)
             {

@@ -28,7 +28,7 @@ public class AnimPlayer : MonoBehaviour
     {
         animator = gameObject.GetComponent<Animator>();
         //ищем управление
-        rezultListInput = GetInput();
+        //rezultListInput = GetInput();
 
         speed = animSettings.Speed;
         animSpeed = animSettings.AnimSpeed;
@@ -37,16 +37,16 @@ public class AnimPlayer : MonoBehaviour
 
     }
 
-    private RegistratorConstruction GetInput()
-    {
-        return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
-    }
+    //private RegistratorConstruction GetInput()
+    //{
+    //    return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
+    //}
     private bool ControlGO()
     {
 
-        if (rezultListInput.HealtObj != null)
+        if (rezultListInput.Healt != null)
         {
-            return rezultListInput.HealtObj.Dead;
+            return rezultListInput.Healt.Dead;
         }
         if (rezultListInput.PlayerHealt != null)
         {
@@ -60,23 +60,23 @@ public class AnimPlayer : MonoBehaviour
         //ищем если не нашли
         if (isRun == false)
         {
-            rezultListInput = GetInput();
-            if (rezultListInput.PhotonIsMainGO)
-            {
-                if (rezultListInput.UserInput != null)
-                {
-                    isRun = rezultListInput.PhotonIsMainGO;
-                }
-            }
+            //rezultListInput = GetInput();
+            //if (rezultListInput.PhotonIsMainGO)
+            //{
+            //    if (rezultListInput.UserInput != null)
+            //    {
+            //        isRun = rezultListInput.PhotonIsMainGO;
+            //    }
+            //}
         }
 
         if (PhotonView.Get(this.gameObject).IsMine && isRun)
         {
-            if (rezultListInput.PhotonIsMainGO == false)
-            {
-                rezultListInput = GetInput();
-                return;
-            }
+            //if (rezultListInput.PhotonIsMainGO == false)
+            //{
+            //    rezultListInput = GetInput();
+            //    return;
+            //}
 
             distans.x = Mathf.Abs(rezultListInput.UserInput.InputData.Move.x);
             distans.y = Mathf.Abs(rezultListInput.UserInput.InputData.Move.y);

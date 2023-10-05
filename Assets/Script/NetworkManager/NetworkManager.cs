@@ -6,8 +6,7 @@ using UnityEngine;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
-    //event
-    public static event Func<List<RegistratorConstruction>> OnGetDataList;
+    
 
     public GameObject PlayerSample;
     public List<Transform> SpawnPonts;
@@ -28,11 +27,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();//запустим тестовый мастер-сервер
     }
 
-    private List<RegistratorConstruction> GetDataList()
-    {
-        return (List<RegistratorConstruction>)(OnGetDataList?.Invoke());
-    }
-
+    
     //возьмем в родителе OnConnectedToMaster() для создания тестового мастер-сервера
     public override void OnConnectedToMaster()
     {
@@ -107,18 +102,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [PunRPC]//для того чтоб фотон знал о данном методе
     public void DestroyGO(int go)
     {
-        rezultList = GetDataList();
+       // rezultList = GetDataList();
 
         for (int i = 0; i < rezultList.Count; i++)
         {
-            if (rezultList[i].PhotonHash == go)
-            {
-                if (rezultList[i].HealtObj != null)
+
+                if (rezultList[i].Healt != null)
                 {
-                    rezultList[i].HealtObj.DestoyGO();
+                    rezultList[i].Healt.DestoyGO();
                 }
 
-            }
+          
         }
 
     }
@@ -147,18 +141,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [PunRPC]//для того чтоб фотон знал о данном методе
     public void DestroyLut(int go)
     {
-        rezultList = GetDataList();
+       // rezultList = GetDataList();
 
         for (int i = 0; i < rezultList.Count; i++)
         {
-            if (rezultList[i].PhotonHash == go)
-            {
+          
                 if (rezultList[i].PickUpItem != null)
                 {
                     rezultList[i].PickUpItem.DestoyGO();
                 }
 
-            }
+            
         }
 
     }

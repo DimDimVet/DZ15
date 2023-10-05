@@ -25,33 +25,33 @@ public class ControlInventory : MonoBehaviour
         canvas.gameObject.SetActive(false);
         openCanvasButton.gameObject.SetActive(true);
 
-        rezultListInput = GetInput();
+        //rezultListInput = GetInput();
     }
 
-    private RegistratorConstruction GetInput()
-    {
-        return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
-    }
+    //private RegistratorConstruction GetInput()
+    //{
+    //    return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
+    //}
 
     private void Update()
     {
         //ищем если не нашли
-        if (isRun == false)
-        {
-            rezultListInput = GetInput();
-            if (rezultListInput.PhotonIsMainGO)
-            {
-                if (rezultListInput.UserInput != null)
-                {
-                    isRun = rezultListInput.PhotonIsMainGO;
-                }
-            }
-        }
+        //if (isRun == false)
+        //{
+        //    rezultListInput = GetInput();
+        //    if (rezultListInput.PhotonIsMainGO)
+        //    {
+        //        if (rezultListInput.UserInput != null)
+        //        {
+        //            isRun = rezultListInput.PhotonIsMainGO;
+        //        }
+        //    }
+        //}
 
-        if (isRun)
-        {
-            GridPlater = rezultListInput.PhotonHash;
-        }
+        //if (isRun)
+        //{
+        //    GridPlater = rezultListInput.PhotonHash;
+        //}
     }
     private void ControlPlayer()
     {

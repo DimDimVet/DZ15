@@ -30,27 +30,27 @@ public class CameraMove : MonoBehaviour
         maxStopAngle = cameraSettings.MaxStopAngle;
 
         //Найдем источника мыши управления камерой
-        rezultListInput = GetInput();
+        //rezultListInput = GetInput();
     }
 
-    private RegistratorConstruction GetInput()
-    {
-        return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
-    }
+    //private RegistratorConstruction GetInput()
+    //{
+    //    return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
+    //}
 
     void Update()
     {
         //ищем если не нашли
         if (isRun == false)
         {
-            rezultListInput = GetInput();
-            if (rezultListInput.PhotonIsMainGO)
-            {
-                if (rezultListInput.UserInput != null)
-                {
-                    isRun = rezultListInput.PhotonIsMainGO;
-                }
-            }
+            //rezultListInput = GetInput();
+            //if (rezultListInput.PhotonIsMainGO)
+            //{
+            //    if (rezultListInput.UserInput != null)
+            //    {
+            //        isRun = rezultListInput.PhotonIsMainGO;
+            //    }
+            //}
 
         }
 

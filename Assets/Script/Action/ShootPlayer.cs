@@ -33,8 +33,8 @@ public class ShootPlayer : MonoBehaviour
     private void Start()
     {
         //ищем управление
-        rezultListInput = GetInput();
-        rezulNetManager = GetNetManager();
+        //rezultListInput = GetInput();
+        //rezulNetManager = GetNetManager();
 
         //dataReg.OutPos = outBullet;
         shootDelay =actionSettings.ShootDelay;
@@ -44,14 +44,14 @@ public class ShootPlayer : MonoBehaviour
         StartCoroutine(Example());
 
     }
-    private RegistratorConstruction GetInput()
-    {
-        return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
-    }
-    private RegistratorConstruction GetNetManager()
-    {
-        return (RegistratorConstruction)(OnGetNetManager?.Invoke());
-    }
+    //private RegistratorConstruction GetInput()
+    //{
+    //    return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
+    //}
+    //private RegistratorConstruction GetNetManager()
+    //{
+    //    return (RegistratorConstruction)(OnGetNetManager?.Invoke());
+    //}
 
     private void InstBulls(int count)
     {
@@ -73,7 +73,7 @@ public class ShootPlayer : MonoBehaviour
         {
             if (rezultListInput.UserInput == null)
             {
-                rezultListInput = GetInput();
+                //rezultListInput = GetInput();
                 return;
             }
 

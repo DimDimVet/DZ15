@@ -344,15 +344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fca2ebc0fd8d89c45a76f2214e382579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healt: {fileID: 0}
-  _playerHealt: {fileID: 0}
-  _shootPlayer: {fileID: 0}
-  _cameraMove: {fileID: 0}
-  _userInput: {fileID: 0}
-  _controlInventory: {fileID: 0}
-  _pickUpItem: {fileID: 0}
-  _networkManager: {fileID: 179129838}
-  _photonView: {fileID: 0}
+  thisGO: {fileID: 179129838}
 --- !u!114 &179129842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -901,15 +893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fca2ebc0fd8d89c45a76f2214e382579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healt: {fileID: 0}
-  _playerHealt: {fileID: 0}
-  _shootPlayer: {fileID: 0}
-  _cameraMove: {fileID: 0}
-  _userInput: {fileID: 0}
-  _controlInventory: {fileID: 0}
-  _pickUpItem: {fileID: 0}
-  _networkManager: {fileID: 0}
-  _photonView: {fileID: 0}
+  thisGO: {fileID: 0}
 --- !u!1 &786607207
 GameObject:
   m_ObjectHideFlags: 0
@@ -1838,6 +1822,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2112135204}
   - component: {fileID: 2112135203}
+  - component: {fileID: 2112135205}
   m_Layer: 0
   m_Name: GlobalList
   m_TagString: Untagged
@@ -1872,6 +1857,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2112135205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112135202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34306f07ab9ef4043b980f69b1ef337f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!81 &7751382500551418368
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1995,15 +1992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fca2ebc0fd8d89c45a76f2214e382579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healt: {fileID: 0}
-  _playerHealt: {fileID: 0}
-  _shootPlayer: {fileID: 0}
-  _cameraMove: {fileID: 7751382500551418375}
-  _userInput: {fileID: 0}
-  _controlInventory: {fileID: 0}
-  _pickUpItem: {fileID: 0}
-  _networkManager: {fileID: 0}
-  _photonView: {fileID: 0}
+  thisGO: {fileID: 7751382500551418375}
 --- !u!114 &8504556696178981460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3221,15 +3210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fca2ebc0fd8d89c45a76f2214e382579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healt: {fileID: 0}
-  _playerHealt: {fileID: 0}
-  _shootPlayer: {fileID: 0}
-  _cameraMove: {fileID: 0}
-  _userInput: {fileID: 0}
-  _controlInventory: {fileID: 8504556697074888126}
-  _pickUpItem: {fileID: 0}
-  _networkManager: {fileID: 0}
-  _photonView: {fileID: 0}
+  thisGO: {fileID: 8504556697074888126}
 --- !u!114 &8504556697141967440
 MonoBehaviour:
   m_ObjectHideFlags: 0

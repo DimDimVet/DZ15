@@ -15,12 +15,12 @@ public class CountText : MonoBehaviour
     private bool isRun;
     void Start()
     {
-        rezultListPlayer = GetInput();
+        //rezultListPlayer = GetInput();
     }
-    private RegistratorConstruction GetInput()
-    {
-        return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
-    }
+    //private RegistratorConstruction GetInput()
+    //{
+    //    return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
+    //}
 
     void Update()
     {
@@ -28,14 +28,14 @@ public class CountText : MonoBehaviour
         //ищем если не нашли
         if (isRun == false)
         {
-            rezultListPlayer = GetInput();
-            if (rezultListPlayer.PhotonIsMainGO)
-            {
-                if (rezultListPlayer.UserInput != null)
-                {
-                    isRun = rezultListPlayer.PhotonIsMainGO;
-                }
-            }
+            //rezultListPlayer = GetInput();
+            //if (rezultListPlayer.PhotonIsMainGO)
+            //{
+            //    if (rezultListPlayer.UserInput != null)
+            //    {
+            //        isRun = rezultListPlayer.PhotonIsMainGO;
+            //    }
+            //}
 
         }
 

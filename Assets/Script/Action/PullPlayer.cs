@@ -29,21 +29,21 @@ public class PullPlayer : MonoBehaviour
         shootDelay= moveSettings.ShootDelay;
 
         //ищем управление
-        rezultListInput = GetInput();
+        //rezultListInput = GetInput();
 
     }
 
-    private RegistratorConstruction GetInput()
-    {
-        return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
-    }
+    //private RegistratorConstruction GetInput()
+    //{
+    //    return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
+    //}
     void Update()
     {
         if (PhotonView.Get(this.gameObject).IsMine)
         {
             if (rezultListInput.UserInput == null)
             {
-                rezultListInput = GetInput();
+                //rezultListInput = GetInput();
                 return;
             }
 

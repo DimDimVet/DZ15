@@ -5,10 +5,6 @@ using UnityEngine;
 
 public class MovePlayer : MonoBehaviour
 {
-    //event
-    public static event Func<RegistratorConstruction> OnGetDataPlayer;
-    public static event Func<RegistratorConstruction> OnGetDataCamera;
-
     [SerializeField] private MoveSettings moveSettings;
     [SerializeField] private Transform cameraPoint;
 
@@ -36,16 +32,6 @@ public class MovePlayer : MonoBehaviour
     {
         UserInput.OnEventMove -= EventMove;
     }
-
-    private RegistratorConstruction GetInput()
-    {
-        return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
-    }
-    private RegistratorConstruction GetCamera()
-    {
-        return (RegistratorConstruction)(OnGetDataCamera?.Invoke());
-    }
-
     private void EventMove(bool isMove)
     {
         this.isMove = isMove;
@@ -55,8 +41,8 @@ public class MovePlayer : MonoBehaviour
     {
         if (isRun == false)//если общее разрешение на запуск false
         {
-            rezultListInput = GetInput();//получаем данные из листа
-            rezultListCamera = GetCamera();
+            //rezultListInput = GetInput();//получаем данные из листа
+            //rezultListCamera = GetCamera();
             if (rezultListInput.UserInput != null && rezultListCamera.CameraMove != null)
             {
                 isRun = true;

@@ -165,15 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fca2ebc0fd8d89c45a76f2214e382579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healt: {fileID: 0}
-  _playerHealt: {fileID: 0}
-  _shootPlayer: {fileID: 0}
-  _cameraMove: {fileID: 0}
-  _userInput: {fileID: 0}
-  _controlInventory: {fileID: 0}
-  _pickUpItem: {fileID: 0}
-  _networkManager: {fileID: 0}
-  _photonView: {fileID: 0}
+  thisGO: {fileID: 7349561362659189365}
 --- !u!114 &942926913779663060
 MonoBehaviour:
   m_ObjectHideFlags: 0
