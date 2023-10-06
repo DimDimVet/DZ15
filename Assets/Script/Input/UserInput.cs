@@ -1,67 +1,68 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public  class UserInput : MonoBehaviour
 {
-    //event
-    public static event Action<bool> OnEventMove;//Хотим отправлять события при факте движения
+    private InputData inputData;//Передадим данные
+    public InputData InputData { get { return inputData; } set { inputData = value; } }
 
-    public InputData InputData;//Передадим данные
+    private bool isMove;//разрешение на событие движения
+    public bool IsMove { get { return isMove; } set { isMove = value; } }
+
     public bool DebugLogOnOff;//для тестов //для вывода в инспектор, временно
+    private MapCurrent inputAction;//Кэш переменной класса MapCurrent(new input)
 
-    //Кэш переменной класса MapCurrent(new input)
-    private MapCurrent inputAction;
-
-    private bool isLook;
     private void OnEnable()
     {
         inputAction = new MapCurrent();//инициализируем карту input
-        InputData = new InputData();
+        inputData = new InputData();
 
         if (inputAction != null)//проверим на null
         {
             //подпишем на event события нажатий и значения присвоим локальным переменым
-            inputAction.UIMap.WASD.performed += context => { InputData.Move = context.ReadValue<Vector2>(); };
-            inputAction.UIMap.WASD.started += context => { InputData.Move = context.ReadValue<Vector2>(); };
-            inputAction.UIMap.WASD.canceled += context => { InputData.Move = context.ReadValue<Vector2>(); };
+            inputAction.UIMap.WASD.performed += context => { inputData.Move = context.ReadValue<Vector2>();
+                if (context.ReadValue<Vector2>() != null) { isMove = true; } else { isMove = false; }
+            };
+            inputAction.UIMap.WASD.started += context => { inputData.Move = context.ReadValue<Vector2>();
+                if (context.ReadValue<Vector2>() != null) { isMove = true; } else { isMove = false; }
+            };
+            inputAction.UIMap.WASD.canceled += context => { inputData.Move = context.ReadValue<Vector2>();
+                if (context.ReadValue<Vector2>() != null) { isMove = false; } else { isMove = true; }
+            };
 
-            inputAction.Map.WASD.performed += context => { InputData.Move = context.ReadValue<Vector2>(); };
-            inputAction.Map.WASD.started += context => { InputData.Move = context.ReadValue<Vector2>(); };
-            inputAction.Map.WASD.canceled += context => { InputData.Move = context.ReadValue<Vector2>(); };
+            inputAction.Map.WASD.performed += context => { inputData.Move = context.ReadValue<Vector2>();
+                if (context.ReadValue<Vector2>() != null) { isMove = true; } else { isMove = false; }
+            };
+            inputAction.Map.WASD.started += context => { inputData.Move = context.ReadValue<Vector2>();
+                if (context.ReadValue<Vector2>() != null) { isMove = true; } else { isMove = false; }
+            };
+            inputAction.Map.WASD.canceled += context => { inputData.Move = context.ReadValue<Vector2>();
+                if (context.ReadValue<Vector2>() != null) { isMove = false; } else { isMove = true; }
+            };
 
-            inputAction.Map.Look.performed += context => { InputData.Mouse = context.ReadValue<Vector2>(); };
-            inputAction.Map.Look.started += context => { InputData.Mouse = context.ReadValue<Vector2>(); };
-            inputAction.Map.Look.canceled += context => { InputData.Mouse = context.ReadValue<Vector2>(); };
+            inputAction.Map.Look.performed += context => { inputData.Mouse = context.ReadValue<Vector2>();
+                if (context.ReadValue<Vector2>() != null) { isMove = true; } else { isMove = false; }
+            };
+            inputAction.Map.Look.started += context => { inputData.Mouse = context.ReadValue<Vector2>();
+                if (context.ReadValue<Vector2>() != null) { isMove = true; } else { isMove = false; }
+            };
+            inputAction.Map.Look.canceled += context => { inputData.Mouse = context.ReadValue<Vector2>();
+                if (context.ReadValue<Vector2>() != null) { isMove = false; } else { isMove = true; }
+            };
 
-            inputAction.Map.Shoot.performed += context => { InputData.Shoot = context.ReadValue<float>(); };
-            inputAction.Map.Shoot.started += context => { InputData.Shoot = context.ReadValue<float>(); };
-            inputAction.Map.Shoot.canceled += context => { InputData.Shoot = context.ReadValue<float>(); };
+            inputAction.Map.Shoot.performed += context => { inputData.Shoot = context.ReadValue<float>(); };
+            inputAction.Map.Shoot.started += context => { inputData.Shoot = context.ReadValue<float>(); };
+            inputAction.Map.Shoot.canceled += context => { inputData.Shoot = context.ReadValue<float>(); };
 
-            inputAction.Map.Pull.performed += context => { InputData.Pull = context.ReadValue<float>(); };
-            inputAction.Map.Pull.started += context => { InputData.Pull = context.ReadValue<float>(); };
-            inputAction.Map.Pull.canceled += context => { InputData.Pull = context.ReadValue<float>(); };
+            inputAction.Map.Pull.performed += context => { inputData.Pull = context.ReadValue<float>(); };
+            inputAction.Map.Pull.started += context => { inputData.Pull = context.ReadValue<float>(); };
+            inputAction.Map.Pull.canceled += context => { inputData.Pull = context.ReadValue<float>(); };
 
-            inputAction.Map.ModePlayer.performed += context => { InputData.Mode = context.ReadValue<float>(); };
-            inputAction.Map.ModePlayer.started += context => { InputData.Mode = context.ReadValue<float>(); };
-            inputAction.Map.ModePlayer.canceled += context => { InputData.Mode = context.ReadValue<float>(); };
+            inputAction.Map.ModePlayer.performed += context => { inputData.Mode = context.ReadValue<float>(); };
+            inputAction.Map.ModePlayer.started += context => { inputData.Mode = context.ReadValue<float>(); };
+            inputAction.Map.ModePlayer.canceled += context => { inputData.Mode = context.ReadValue<float>(); };
 
             //запустим 
             inputAction.Enable();
-
-            //запустим дублирующие события для иных классов
-            inputAction.Map.WASD.performed += PerformedWASD;
-            inputAction.Map.WASD.started += PerformedWASD;
-            inputAction.Map.WASD.canceled += CanceledWASD;
-
-            inputAction.UIMap.WASD.performed += PerformedWASD;
-            inputAction.UIMap.WASD.started += PerformedWASD;
-            inputAction.UIMap.WASD.canceled += CanceledWASD;
-
-            inputAction.Map.Look.performed += PerformedLook;
-            inputAction.Map.Look.started += PerformedLook;
-            inputAction.Map.Look.canceled += CanceledLook;
-
         }
         else
         {
@@ -69,51 +70,16 @@ public  class UserInput : MonoBehaviour
         }
     }
 
-    //если есть события WASD то создадим событие
-    private void PerformedWASD(InputAction.CallbackContext context)
-    {
-        if (context.ReadValue<Vector2>()!=null)
-        {
-            OnEventMove?.Invoke(true);
-        }
-    }
-    //если событие WASD закончилось то создадим событие
-    private void CanceledWASD(InputAction.CallbackContext context)
-    {
-        if (context.ReadValue<Vector2>() != null && isLook==false)
-        {
-            OnEventMove?.Invoke(false);
-        }
-    }
-
-    //если есть события Look то создадим событие
-    private void PerformedLook(InputAction.CallbackContext context)
-    {
-        if (context.ReadValue<Vector2>() != null)
-        {
-            isLook = true;
-            OnEventMove?.Invoke(true);
-        }
-    }
-    //если событие Look закончилось то создадим событие
-    private void CanceledLook(InputAction.CallbackContext context)
-    {
-        if (context.ReadValue<Vector2>() != null)
-        {
-            isLook=false;
-        }
-    }
-
-
     void Update()
     {
+        Debug.Log($"{IsMove} -{inputData.Move}");
         if (DebugLogOnOff)//для вывода в инспектор, временно
         {
-            Debug.Log($"Движение Х = {InputData.Move.x}, Движение Y = {InputData.Move.y}");
-            Debug.Log($"Мышь Х = {InputData.Mouse.x}, Мышь Y = {InputData.Mouse.y}");
-            Debug.Log($"Выстрел = {InputData.Shoot}");
-            Debug.Log($"Толчек = {InputData.Pull}");
-            Debug.Log($"Режим = {InputData.Mode}");
+            Debug.Log($"Движение Х = {inputData.Move.x}, Движение Y = {inputData.Move.y}");
+            Debug.Log($"Мышь Х = {inputData.Mouse.x}, Мышь Y = {inputData.Mouse.y}");
+            Debug.Log($"Выстрел = {inputData.Shoot}");
+            Debug.Log($"Толчек = {inputData.Pull}");
+            Debug.Log($"Режим = {inputData.Mode}");
         }
     }
 }

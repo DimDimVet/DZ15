@@ -1,29 +1,26 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static EventManager;
 
 /// <summary>
 /// Главный справочник всех нужных объектов
 /// </summary>
-public class RegistratorList: MonoBehaviour
+public abstract class RegistratorGo : MonoBehaviour
 {
-    private List<RegistratorConstruction> DataObjects = new List<RegistratorConstruction>();
-    private void OnEnable()//подписки
+    private readonly static List<RegistratorConstruction> DataGO = new List<RegistratorConstruction>();
+    /// <summary>
+    /// Запишем в лист
+    /// </summary>
+    /// <param name="registrator"></param>
+    public void SetData(RegistratorConstruction registrator)
     {
-        OnSetData += SetDataList;
-        //OnOutDataList += OutDataList;
+        DataGO.Add(registrator);
     }
-    private void OnDisable()//отписки
+    /// <summary>
+    /// Получим лист
+    /// </summary>
+    /// <returns></returns>
+    public List<RegistratorConstruction> GetData()
     {
-        OnSetData -= SetDataList;
-        //OnOutDataList -= OutDataList;
+        return DataGO;
     }
-    private void SetDataList(RegistratorConstruction data)
-    {
-        DataObjects.Add(data);
-    }
-    //private List<RegistratorConstruction> OutDataList()
-    //{
-    //    return DataObjects;
-    //}
 }

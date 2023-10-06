@@ -6433,7 +6433,6 @@ GameObject:
   - component: {fileID: 3246619992901899173}
   - component: {fileID: 7089426535128957392}
   - component: {fileID: 1205632862985927034}
-  - component: {fileID: 602216902365124686}
   - component: {fileID: 3846573018654716408}
   - component: {fileID: 2234729609187247867}
   - component: {fileID: 8634523454750722470}
@@ -6615,20 +6614,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fca2ebc0fd8d89c45a76f2214e382579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisGO: {fileID: 9088432932768024922}
---- !u!114 &602216902365124686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4091716778986975228}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ad4a28d89e98c04996e09dc7c653e09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DebugLogOnOff: 0
+  isTest: 0
 --- !u!114 &3846573018654716408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6641,6 +6627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7651c43ccee2eb4db67c05702456c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebugLogOnOff: 0
   moveSettings: {fileID: 11400000, guid: a1f77bd8bbf6f8e459a985ddac72a784, type: 2}
   cameraPoint: {fileID: 7674799986610305301}
 --- !u!114 &2234729609187247867

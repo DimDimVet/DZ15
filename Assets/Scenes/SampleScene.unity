@@ -1822,7 +1822,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2112135204}
   - component: {fileID: 2112135203}
-  - component: {fileID: 2112135205}
   m_Layer: 0
   m_Name: GlobalList
   m_TagString: Untagged
@@ -1857,18 +1856,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2112135205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2112135202}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34306f07ab9ef4043b980f69b1ef337f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!81 &7751382500551418368
 AudioListener:
   m_ObjectHideFlags: 0
