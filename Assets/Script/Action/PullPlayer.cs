@@ -1,16 +1,8 @@
-using Photon.Pun;
-using System;
 using UnityEngine;
-using Zenject;
 
-public class PullPlayer : MonoBehaviour
+public class PullPlayer : Action
 {
-    //event
-    public static event Func<RegistratorConstruction> OnGetDataPlayer;
-
     [SerializeField] private MoveSettings moveSettings;
-
-    private RegistratorConstruction rezultListInput;
 
     public Transform[] PointGnd;
     private Rigidbody rigidbodyObj;
@@ -19,7 +11,8 @@ public class PullPlayer : MonoBehaviour
 
     private float shootDelay;
     private float shootTime = float.MinValue;
-    void Start()
+
+    private void OnEnable()
     {
         rigidbodyObj = gameObject.GetComponent<Rigidbody>();
 
@@ -27,35 +20,31 @@ public class PullPlayer : MonoBehaviour
         height = moveSettings.Height;
         groundLayer = moveSettings.GroundLayer;
         shootDelay= moveSettings.ShootDelay;
-
-        //ищем управление
-        //rezultListInput = GetInput();
-
     }
 
-    //private RegistratorConstruction GetInput()
-    //{
-    //    return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
-    //}
-    void Update()
+    public new void MoveActiv()
     {
-        if (PhotonView.Get(this.gameObject).IsMine)
+        Debug.Log("+");
+        if (/*PhotonView.Get(this.gameObject).IsMine &&*/ IsRun)
         {
-            if (rezultListInput.UserInput == null)
+            Debug.Log(RezultInput.UserInput.InputData.Pull != 0);
+            if (RezultInput.UserInput == null)
             {
-                //rezultListInput = GetInput();
                 return;
             }
 
-            if (rezultListInput.UserInput.InputData.Pull != 0)//получим нажатие
+            if (RezultInput.UserInput.InputData.Pull != 0)//получим нажатие
             {
+                Debug.Log(RezultInput.UserInput.InputData.Pull != 0);
                 Jamp();
             }
         }
-        
     }
-
-    public void Jamp()
+    private void Update()
+    {
+        Debug.Log(RezultInput.UserInput.InputData.Pull != 0);
+    }
+    private void Jamp()
     {
         if (Time.time < shootTime + shootDelay)
         {

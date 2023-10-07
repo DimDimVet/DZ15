@@ -2,7 +2,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using static EventManager;
 
-public class MovePlayer : /*MonoBehaviour*/UserInput
+public class MovePlayer :UserInput
 {
     [SerializeField] private MoveSettings moveSettings;
     [SerializeField] private Transform cameraPoint;
@@ -14,7 +14,6 @@ public class MovePlayer : /*MonoBehaviour*/UserInput
     private bool isRun = false;//разрешение на работу
 
     private RegistratorConstruction rezultCamera;
-    //private RegistratorConstruction rezultPlayer;
 
     private void OnEnable()
     {
@@ -23,12 +22,11 @@ public class MovePlayer : /*MonoBehaviour*/UserInput
 
     private void GetConnectEvent()//получаем ращрешение по результату данных из листа
     {
-        if (isRun == false)//если общее разрешение на запуск false
+        if (!isRun)//если общее разрешение на запуск false
         {
-            //rezultPlayer = GetPlayer();//получаем данные из листа
             rezultCamera = GetCamera();//получаем данные из листа
 
-            if (/*rezultPlayer.UserInput != null*/IsMove && rezultCamera.CameraMove != null)
+            if (IsMove && rezultCamera.CameraMove != null)
             {
                 isRun = true;
             }
@@ -77,7 +75,6 @@ public class MovePlayer : /*MonoBehaviour*/UserInput
     }
     private void FixedUpdate()
     {
-        Debug.Log($"{base.IsMove} - {isRun}");
         if (!isRun)//если нет разрешения, пытаемся подключать лист
         {
             GetConnectEvent();
@@ -88,6 +85,7 @@ public class MovePlayer : /*MonoBehaviour*/UserInput
         {
             Move();
         }
+
     }
 }
 

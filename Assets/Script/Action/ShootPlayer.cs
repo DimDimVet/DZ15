@@ -1,15 +1,10 @@
 using Photon.Pun;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootPlayer : MonoBehaviour
+public class ShootPlayer : Action
 {
-    //event
-    public static event Func<RegistratorConstruction> OnGetDataPlayer;
-    public static event Func<RegistratorConstruction> OnGetNetManager;
-    //
     [SerializeField] private ActionSettings actionSettings;
     //
     private RegistratorConstruction rezultListInput;
@@ -44,14 +39,6 @@ public class ShootPlayer : MonoBehaviour
         StartCoroutine(Example());
 
     }
-    //private RegistratorConstruction GetInput()
-    //{
-    //    return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
-    //}
-    //private RegistratorConstruction GetNetManager()
-    //{
-    //    return (RegistratorConstruction)(OnGetNetManager?.Invoke());
-    //}
 
     private void InstBulls(int count)
     {

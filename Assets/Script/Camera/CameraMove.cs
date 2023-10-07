@@ -1,18 +1,17 @@
 using System;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
+using static EventManager;
 
 public class CameraMove : MonoBehaviour
 {
-    //event
-    public static event Func<RegistratorConstruction> OnGetDataPlayer;
-
     [HideInInspector] public float2 AngleCamera;
     [HideInInspector] public Transform GetTransformPointCamera;
     //
     [SerializeField] private CameraSettings cameraSettings;
 
-    private RegistratorConstruction rezultListInput;
+    private RegistratorConstruction rezultInput;
 
     private float2 inputMouse;
     private float yRot;
@@ -28,35 +27,35 @@ public class CameraMove : MonoBehaviour
         mouseSensor = cameraSettings.MouseSensor;
         minStopAngle = cameraSettings.MinStopAngle;
         maxStopAngle = cameraSettings.MaxStopAngle;
-
-        //Найдем источника мыши управления камерой
-        //rezultListInput = GetInput();
     }
 
-    //private RegistratorConstruction GetInput()
-    //{
-    //    return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
-    //}
-
-    void Update()
+    private void GetConnectEvent()//получаем ращрешение по результату данных из листа
     {
-        //ищем если не нашли
-        if (isRun == false)
+        if (!isRun)//если общее разрешение на запуск false
         {
-            //rezultListInput = GetInput();
-            //if (rezultListInput.PhotonIsMainGO)
-            //{
-            //    if (rezultListInput.UserInput != null)
-            //    {
-            //        isRun = rezultListInput.PhotonIsMainGO;
-            //    }
-            //}
+            rezultInput = GetPlayer();//получаем данные из листа
 
+            if (rezultInput.UserInput != null)
+            {
+                isRun = true;
+            }
+            else
+            {
+                isRun = false;
+                return;
+            }
         }
-
-        if (isRun)
+        else
         {
-            inputMouse = rezultListInput.UserInput.InputData.Mouse;
+            isRun = true;
+        }
+    }
+
+    private void MoveActiv()
+    {
+        if (/*PhotonView.Get(this.gameObject).IsMine &&*/ isRun)
+        {
+            inputMouse = rezultInput.UserInput.InputData.Mouse;
 
             AngleCamera = inputMouse * mouseSensor * Time.deltaTime;
             yRot -= AngleCamera.y;
@@ -69,6 +68,16 @@ public class CameraMove : MonoBehaviour
                 transform.rotation = GetTransformPointCamera.rotation;
             }
         }
-
+    }
+    private void FixedUpdate()
+    {
+        if (!isRun)//если нет разрешения, пытаемся подключать лист
+        {
+            GetConnectEvent();
+        }
+        else
+        {
+            MoveActiv();
+        }
     }
 }

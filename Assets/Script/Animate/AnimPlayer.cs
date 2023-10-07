@@ -1,17 +1,12 @@
-using Photon.Pun;
-using System;
 using Unity.Mathematics;
 using UnityEngine;
+using static EventManager;
 
 public class AnimPlayer : MonoBehaviour
 {
-    //event
-    public static event Func<RegistratorConstruction> OnGetDataPlayer;
-
     [SerializeField] private AnimSettings animSettings;
 
-    private RegistratorConstruction rezultListInput;
-
+    private RegistratorConstruction rezultInput;
     //anim
     private float speed;
     private string animSpeed;
@@ -24,64 +19,61 @@ public class AnimPlayer : MonoBehaviour
     private float2 distans;
 
     private bool isRun;
-    void Start()
+
+    private void OnEnable()
     {
         animator = gameObject.GetComponent<Animator>();
-        //ищем управление
-        //rezultListInput = GetInput();
 
         speed = animSettings.Speed;
         animSpeed = animSettings.AnimSpeed;
         animJamp = animSettings.AnimJamp;
         animDead = animSettings.AnimDead;
-
     }
 
-    //private RegistratorConstruction GetInput()
-    //{
-    //    return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
-    //}
     private bool ControlGO()
     {
 
-        if (rezultListInput.Healt != null)
+        if (rezultInput.Healt != null)
         {
-            return rezultListInput.Healt.Dead;
+            return rezultInput.Healt.Dead;
         }
-        if (rezultListInput.PlayerHealt != null)
+        if (rezultInput.PlayerHealt != null)
         {
-            return rezultListInput.PlayerHealt.Dead;
+            return rezultInput.PlayerHealt.Dead;
         }
-
         return false;
     }
-    void Update()
+
+    private void GetConnectEvent()//получаем ращрешение по результату данных из листа
     {
-        //ищем если не нашли
-        if (isRun == false)
+        if (!isRun)//если общее разрешение на запуск false
         {
-            //rezultListInput = GetInput();
-            //if (rezultListInput.PhotonIsMainGO)
-            //{
-            //    if (rezultListInput.UserInput != null)
-            //    {
-            //        isRun = rezultListInput.PhotonIsMainGO;
-            //    }
-            //}
+            rezultInput = GetPlayer();//получаем данные из листа
+
+            if (rezultInput.UserInput != null)
+            {
+                isRun = true;
+            }
+            else
+            {
+                isRun = false;
+                return;
+            }
         }
-
-        if (PhotonView.Get(this.gameObject).IsMine && isRun)
+        else
         {
-            //if (rezultListInput.PhotonIsMainGO == false)
-            //{
-            //    rezultListInput = GetInput();
-            //    return;
-            //}
+            isRun = true;
+        }
+    }
 
-            distans.x = Mathf.Abs(rezultListInput.UserInput.InputData.Move.x);
-            distans.y = Mathf.Abs(rezultListInput.UserInput.InputData.Move.y);
+    private void MoveActiv()
+    {
+        if (/*PhotonView.Get(this.gameObject).IsMine &&*/ isRun)
+        {
+            distans.x = Mathf.Abs(rezultInput.UserInput.InputData.Move.x);
+            distans.y = Mathf.Abs(rezultInput.UserInput.InputData.Move.y);
 
-            if (distans.x >= refDistance | distans.y >= refDistance)
+            if (distans.x >= refDistance || distans.y >= refDistance)
             {
                 animator.SetFloat(animSpeed, speed * math.distancesq(distans.x, -distans.y));
             }
@@ -92,7 +84,7 @@ public class AnimPlayer : MonoBehaviour
 
             //pull
             //реакция на изменеия, запустим анимацию 
-            if (rezultListInput.UserInput.InputData.Pull > 0f)
+            if (rezultInput.UserInput.InputData.Pull > 0f)
             {
                 animator.SetBool(animJamp, true);
             }
@@ -106,6 +98,18 @@ public class AnimPlayer : MonoBehaviour
             {
                 animator.SetBool(animDead, true);
             }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (!isRun)//если нет разрешения, пытаемся подключать лист
+        {
+            GetConnectEvent();
+        }
+        else
+        {
+            MoveActiv();
         }
     }
 }
