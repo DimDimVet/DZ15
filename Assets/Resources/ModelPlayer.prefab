@@ -6437,7 +6437,7 @@ GameObject:
   - component: {fileID: 2234729609187247867}
   - component: {fileID: 8634523454750722470}
   - component: {fileID: 1792852733553238902}
-  - component: {fileID: 492601782332314867}
+  - component: {fileID: -571315531997070935}
   - component: {fileID: 1740151484985613871}
   - component: {fileID: 8870532737483712218}
   - component: {fileID: 8694405927497321468}
@@ -6671,11 +6671,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionSettings: {fileID: 11400000, guid: b16bf34b4be98284ebec2dcd7f9fa6cb, type: 2}
-  CountBull: 0
   bullet: {fileID: 666899814636228908, guid: fccd8accd9ebf724aa8ffc3508e710e4, type: 3}
   outBullet: {fileID: 6086253454069508534}
   gunExitParticle: {fileID: 4356999714429378628}
---- !u!114 &492601782332314867
+--- !u!114 &-571315531997070935
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6684,13 +6683,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4091716778986975228}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 796f41f1dfced044ca41474503d7447d, type: 3}
+  m_Script: {fileID: 11500000, guid: 12be34ceb4485744cb8a1bd80dba4938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   settingsData: {fileID: 11400000, guid: 259e38a9fd884a4448825187cdfa2e24, type: 2}
-  HealtCount: 0
-  Damage: 0
-  Dead: 0
 --- !u!114 &1740151484985613871
 MonoBehaviour:
   m_ObjectHideFlags: 0

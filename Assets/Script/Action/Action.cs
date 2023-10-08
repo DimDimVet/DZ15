@@ -10,7 +10,7 @@ public class Action : MonoBehaviour
     public bool IsRun { get { return isRun; } }
 
     public delegate void OnGetConnectEvent();
-    private void Start()
+    private void Awake()
     {
         OnGetConnectEvent onGetConnectEvent = new OnGetConnectEvent(GetConnectEvent);
     }
@@ -36,7 +36,10 @@ public class Action : MonoBehaviour
         }
     }
 
-    public void MoveActiv()
+    public virtual void Tick()
+    {
+    }
+    public virtual void MoveActiv()
     {
     }
     private void FixedUpdate()
@@ -44,6 +47,7 @@ public class Action : MonoBehaviour
         if (!isRun)//если нет разрешени€, пытаемс€ подключать лист
         {
             GetConnectEvent();
+            Tick();
         }
         else
         {

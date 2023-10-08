@@ -1,55 +1,66 @@
-using System;
 using UnityEngine;
+using static EventManager;
 
 public class Healt : MonoBehaviour
 {
-    //event
-    public static event Func<RegistratorConstruction> OnGetNetManager;
-
     [SerializeField] private HealtSetting settingsData;
 
-    [HideInInspector] public int HealtCount = 0;
-    [HideInInspector] public int Damage;
-    [HideInInspector] public bool Dead = false;
+    private int healtCount = 0;
+    public int HealtCount { get { return healtCount; } set { healtCount = value; } }
 
-    private bool isOneTriger = true;
+    private int damage = 0;
+    public int Damage { get { return damage; } set { damage = value; } }
 
-    private RegistratorConstruction rezultNetManager;
+    private bool dead = false;
+    public bool Dead { get { return dead; } set { dead = value; } }
 
-    void Start()
+    private int thisHash;
+
+    private void Awake()
     {
+        thisHash=gameObject.GetHashCode();
+
         if (settingsData.Healt != 0)
         {
             HealtCount = settingsData.Healt;
         }
     }
-    private RegistratorConstruction GetNetManager()
+
+    private void OnEnable()
     {
-        return (RegistratorConstruction)(OnGetNetManager?.Invoke());
+        OnGetDamageHash += HealtContoll;
     }
 
-    void Update()
+    private void OnDisable()
     {
-        if (Damage != 0)
-        {
-            HealtContoll(Damage);
-            Damage = 0;
-        }
+        OnGetDamageHash -= HealtContoll;
     }
-    public void HealtContoll(int damage)
+
+    private void OnDestroy()
     {
-        HealtCount -= damage;
-        if (HealtCount <= 0 && isOneTriger)
+        OnGetDamageHash -= HealtContoll;
+    }
+
+    public void HealtContoll(int hash,int damage)
+    {
+        if (thisHash == hash)
         {
-            Dead = true;
-            DestoyGO();
-            isOneTriger = false;
+            HealtCount -= damage;
+            TrigerCount();
+            if (HealtCount <= 0)
+            {
+                Dead = true;
+                DestoyGO();
+            }
         }
     }
 
     public void DestoyGO()
     {
-        rezultNetManager = GetNetManager();
-        rezultNetManager.NetworkManager.DestroyThisGO(this.gameObject);
+        RegistratorConstruction rezult =GetNetworkManager();
+        if (rezult.NetworkManager!=null)//объект созданный через фотон, убиваем через фотон
+        {
+            rezult.NetworkManager.DestroyThisGO(this.gameObject);
+        }
     }
 }

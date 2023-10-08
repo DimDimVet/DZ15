@@ -150,9 +150,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingsData: {fileID: 11400000, guid: 25ef63077b51459418ef1052a136e395, type: 2}
-  HealtCount: 0
-  Damage: 0
-  Dead: 0
 --- !u!114 &7349561362659189366
 MonoBehaviour:
   m_ObjectHideFlags: 0

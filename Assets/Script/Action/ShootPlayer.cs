@@ -1,16 +1,14 @@
-using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static EventManager;
 
 public class ShootPlayer : Action
 {
     [SerializeField] private ActionSettings actionSettings;
-    //
-    private RegistratorConstruction rezultListInput;
-    private RegistratorConstruction rezulNetManager;
 
-    [HideInInspector] public int CountBull;
+    private int countBull = 0;
+    public int CountBull { get { return countBull; } /*set { countBull = value; }*/ }
 
     [SerializeField] private GameObject bullet;
     [SerializeField] private Transform outBullet;
@@ -25,19 +23,13 @@ public class ShootPlayer : Action
     //Bulls
     private List<Bull> bulls = new List<Bull>(); //тут будем хранить экз пуль   
 
-    private void Start()
+    private void OnEnable()
     {
-        //ищем управление
-        //rezultListInput = GetInput();
-        //rezulNetManager = GetNetManager();
-
-        //dataReg.OutPos = outBullet;
         shootDelay =actionSettings.ShootDelay;
 
         InstBulls(10);
 
         StartCoroutine(Example());
-
     }
 
     private void InstBulls(int count)
@@ -47,30 +39,27 @@ public class ShootPlayer : Action
             GameObject bulle =Instantiate(bullet, outBullet.position, outBullet.rotation);
             Bull scriptBulle = bulle.GetComponent<Bull>();
 
-            scriptBulle.isSet = false;
+            scriptBulle.isRun = false;
             bulls.Add(scriptBulle);
         }
     }
 
-
-
-    void Update()
+    public override void MoveActiv()
     {
-        if (PhotonView.Get(this.gameObject).IsMine)
+        if (/*PhotonView.Get(this.gameObject).IsMine &&*/ IsRun)
         {
-            if (rezultListInput.UserInput == null)
+            if (RezultInput.UserInput == null)
             {
-                //rezultListInput = GetInput();
                 return;
             }
 
-            if (rezultListInput.UserInput.InputData.Shoot != 0)//получим нажатие
+            if (RezultInput.UserInput.InputData.Shoot != 0)//получим нажатие
             {
                 Shoot();
             }
         }
-        
     }
+
     private IEnumerator Example()
     {
         int i = 0;
@@ -81,7 +70,7 @@ public class ShootPlayer : Action
         }
     }
 
-    public void Shoot()
+    private void Shoot()
     {
         if (Time.time < shootTime + shootDelay)
         {
@@ -92,13 +81,14 @@ public class ShootPlayer : Action
             shootTime = Time.time;
         }
 
-        //bullFactory.Create();
-        CountBull++;
+        countBull++;
         for (int i = 0; i < bulls.Count; i++)
         {
-            if (bulls[i].isSet==false)
+            if (bulls[i].isRun==false)
             {
+                gunExitParticle.Play();
                 bulls[i].ShootBull(true, outBullet);
+                TrigerCount();
                 return;
             }
         }

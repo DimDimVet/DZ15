@@ -22,12 +22,10 @@ public class PullPlayer : Action
         shootDelay= moveSettings.ShootDelay;
     }
 
-    public new void MoveActiv()
+    public override void MoveActiv()
     {
-        Debug.Log("+");
         if (/*PhotonView.Get(this.gameObject).IsMine &&*/ IsRun)
         {
-            Debug.Log(RezultInput.UserInput.InputData.Pull != 0);
             if (RezultInput.UserInput == null)
             {
                 return;
@@ -35,14 +33,9 @@ public class PullPlayer : Action
 
             if (RezultInput.UserInput.InputData.Pull != 0)//получим нажатие
             {
-                Debug.Log(RezultInput.UserInput.InputData.Pull != 0);
                 Jamp();
             }
         }
-    }
-    private void Update()
-    {
-        Debug.Log(RezultInput.UserInput.InputData.Pull != 0);
     }
     private void Jamp()
     {

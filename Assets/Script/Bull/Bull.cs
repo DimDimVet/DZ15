@@ -1,20 +1,16 @@
-using System;
 using UnityEngine;
-
+using static EventManager;
 
 public class Bull : MonoBehaviour
 {
-    //event
-    public static event Func<int, RegistratorConstruction> OnGetData;
-
-    public bool isSet = false;
+    public bool isRun = false;
 
     [SerializeField] private ParticleSystem particleSys;
     [SerializeField] private TrailRenderer trailRender;
     [SerializeField] private BullSettings bullSettings;
 
     private int hashGO;
-    private RegistratorConstruction rezultListGO;
+    private RegistratorConstruction rezultGO;
 
     [SerializeField] private GameObject decalGO;
     private int damage;
@@ -23,15 +19,19 @@ public class Bull : MonoBehaviour
     private Vector3 startPos;
     public Vector3 EndPos;
     private Renderer rendererGO;
+    private RaycastHit hit;
+    private bool isStop;
 
     private float shootDelay=5f;
     private float shootTime = float.MinValue;
 
     private GameObject decal;
     private SpriteRenderer spriteRender;
+    private int thisGO;
 
-    private void Start()
+    private void Awake()
     {
+        thisGO = gameObject.GetHashCode();
         rendererGO = GetComponent<Renderer>();
 
         damage = bullSettings.Damage;
@@ -39,20 +39,29 @@ public class Bull : MonoBehaviour
         collaiderBullet = gameObject.GetComponent<Collider>();
         startPos = transform.position;
 
-        if (isSet == false)
+        if (isRun == false)
         {
-            //collaiderBullet.enabled = isSet;
-            rendererGO.enabled = isSet;
+            collaiderBullet.enabled = isRun;
+            rendererGO.enabled = isRun;
             particleSys.Stop();
-            trailRender.enabled = isSet;
+            trailRender.enabled = isRun;
         }
 
         InstDecal();
     }
-    private RegistratorConstruction GetData(int hash)
+
+    public void ShootBull(bool _isRun, Transform _startPos)
     {
-        return (RegistratorConstruction)(OnGetData?.Invoke(hash));
+        transform.position = _startPos.position;
+        transform.rotation = _startPos.rotation;
+        startPos = transform.position;
+
+        EndPos = _startPos.position;
+        EndPos.y = _startPos.position.y + 2f;
+        isRun = _isRun;
+
     }
+
     private void InstDecal()
     {
         decal = Instantiate(decalGO);
@@ -60,96 +69,88 @@ public class Bull : MonoBehaviour
         spriteRender.enabled = false;
     }
 
-
-
-    public void ShootBull(bool _isSet, Transform _startPos)
+    private void MoveBull()
     {
-        transform.position = _startPos.position;
-        transform.rotation = _startPos.rotation;
-        startPos = transform.position;
-
-        EndPos = _startPos.position;
-        EndPos.y = _startPos.position.y + 1f;
-        isSet = _isSet;
-
+        if (isStop)
         {
-            rendererGO.enabled = true;
-            particleSys.Play();
-            trailRender.enabled = true;
-        }
-    }
-
-    private void Update()
-    {
-        if (isSet == false)
-        {
-            return;
+            OnBull(true);
+            transform.Translate(Vector3.forward * speed * Time.deltaTime);
         }
         else
         {
+            EndPos = transform.position;
+        }
 
-            transform.Translate(Vector3.forward * speed * Time.deltaTime);
-            RaycastHit hit;
-            //GameObject decal;
-            if (Physics.Linecast(startPos, transform.position, out hit))
+        CollisionBull(out isStop);
+    }
+
+    private void OnBull(bool isOn)
+    {
+        rendererGO.enabled = isOn;
+
+        if (isOn) 
+        {
+            particleSys.Play();
+        }
+        else
+        {
+            particleSys.Stop();
+        }
+
+        trailRender.enabled = isOn;
+    }
+
+    private void CollisionBull(out bool _isStop)
+    {
+        if (Physics.Linecast(startPos, transform.position, out hit))
+        {
+            _isStop = false;
+
+            ExecutorCollision(hit);
+
+            decal.transform.position = hit.point + hit.normal * 0.001f;
+            decal.transform.rotation = Quaternion.LookRotation(-hit.normal);
+            spriteRender.enabled = true;
+
+            if (Time.time < shootTime * 1.1f)
             {
-                ExecutorCollision(hit);
-
-                collaiderBullet.enabled = false;
-                //decal = Instantiate(decalGO);
-
-                decal.transform.position = hit.point + hit.normal * 0.001f;
-                decal.transform.rotation = Quaternion.LookRotation(-hit.normal);
-                spriteRender.enabled = true;
-
-                {
-                    rendererGO.enabled = false;
-                    particleSys.Stop();
-                    trailRender.enabled = false;
-                    transform.position = EndPos;
-                    isSet = false;
-                }
-
-
-                if (Time.time < shootTime * 1.1f)
-                {
-                    return;
-                }
-                else
-                {
-                    shootTime = Time.time;
-                }
-                spriteRender.enabled = false;
-
-                //Destroy(decal, 1);
-
-                //Destroy(gameObject);
-                
-                
+                return;
             }
             else
             {
-                //Destroy(gameObject, 5);
-
-                if (Time.time < shootTime + shootDelay)
-                {
-                    return;
-                }
-                else
-                {
-                    shootTime = Time.time;
-                }
-
-                rendererGO.enabled = false;
-                particleSys.Stop();
-                trailRender.enabled = false;
-                transform.position = EndPos;
-                isSet = false;
+                shootTime = Time.time;
             }
-            //startPos = transform.position;
+            spriteRender.enabled = false;
+
+            OnBull(false);
+            transform.position = EndPos;
+
+            isRun = false;
         }
+        else
+        {
+            if (Time.time < shootTime + shootDelay)
+            {
+                _isStop = true;
+                return;
+            }
+            else
+            {
+                _isStop = false;
+                OnBull(false);
+                transform.position = EndPos;
+                isRun = false;
+                shootTime = Time.time;
+            }
+        }
+    }
 
-
+    private void FixedUpdate()
+    {
+        if (isRun)//если есть разрешения запустим работу пули
+        {
+            MoveBull();
+        }
     }
 
     private void ExecutorCollision(RaycastHit hit)
@@ -157,18 +158,13 @@ public class Bull : MonoBehaviour
         //ищем объект
         hashGO = hit.collider.gameObject.GetHashCode();
 
-        rezultListGO = GetData(hashGO);
-
+        rezultGO = GetObjectHash(hashGO);
         //Healt
-        if (rezultListGO.Hash == hashGO)
+        if (rezultGO.Hash == hashGO && thisGO != hashGO)
         {
-            if (rezultListGO.Healt != null)
+            if (rezultGO.Healt != null)
             {
-                rezultListGO.Healt.Damage = damage;
-            }
-            if (rezultListGO.PlayerHealt != null)
-            {
-                rezultListGO.PlayerHealt.Damage = damage;
+                GetDamageHash(hashGO, damage);
             }
         }
         else

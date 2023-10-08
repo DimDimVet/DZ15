@@ -6,7 +6,7 @@ public class ViewModelFPSCount : MonoBehaviour
     [SerializeField] private Text textCountFPS;
     [SerializeField] private Text textMinFPS;
     [SerializeField] private Text textMaxFPS;
-    private int countTextDigital = 500;
+    private int countTextDigital = 1500;
     private string[] textDigital;
 
     private FPSCount fpsCount;

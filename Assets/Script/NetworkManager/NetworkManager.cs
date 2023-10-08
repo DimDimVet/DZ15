@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
-    
-
     public GameObject PlayerSample;
     public List<Transform> SpawnPonts;
     private int id;
@@ -27,7 +25,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();//запустим тестовый мастер-сервер
     }
 
-    
     //возьмем в родителе OnConnectedToMaster() для создания тестового мастер-сервера
     public override void OnConnectedToMaster()
     {
@@ -70,12 +67,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         for (int i = 0; i < bulls.Count; i++)
         {
-            if (bulls[i]!=null)
+            if (bulls[i] != null)
             {
                 PhotonNetwork.Instantiate(bulls[i].name, outPoint.position, outPoint.rotation);
             }
         }
-        
+
     }
 
     public void DestroyThisGO(GameObject go)
@@ -87,7 +84,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         else
         {
             tempDestroy = go;
-
             if (PhotonView.Get(go).IsMine)
             {
                 PhotonNetwork.Destroy(go);
@@ -102,19 +98,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [PunRPC]//для того чтоб фотон знал о данном методе
     public void DestroyGO(int go)
     {
-       // rezultList = GetDataList();
+        // rezultList = GetDataList();
 
         for (int i = 0; i < rezultList.Count; i++)
         {
-
-                if (rezultList[i].Healt != null)
-                {
-                    rezultList[i].Healt.DestoyGO();
-                }
-
-          
+            if (rezultList[i].Healt != null)
+            {
+                rezultList[i].Healt.DestoyGO();
+            }
         }
-
     }
 
     public void DestroyThisLut(GameObject go)
@@ -141,17 +133,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [PunRPC]//для того чтоб фотон знал о данном методе
     public void DestroyLut(int go)
     {
-       // rezultList = GetDataList();
+        // rezultList = GetDataList();
 
         for (int i = 0; i < rezultList.Count; i++)
         {
-          
-                if (rezultList[i].PickUpItem != null)
-                {
-                    rezultList[i].PickUpItem.DestoyGO();
-                }
 
-            
+            if (rezultList[i].PickUpItem != null)
+            {
+                rezultList[i].PickUpItem.DestoyGO();
+            }
+
+
         }
 
     }

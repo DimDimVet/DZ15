@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using static EventManager;
 
 public class RegistratorExecutor :RegistratorGo
@@ -8,13 +9,17 @@ public class RegistratorExecutor :RegistratorGo
     private void OnEnable()
     {
         OnGetCamera += GetDataCamera;//отдадим Camera
-        OnGetPlayer += GetDataPlayer;//отдадим Camera
+        OnGetPlayer += GetDataPlayer;//отдадим Player
+        OnGetObjectHash += GetDataHash;//отдадим объект по hash
+        OnGetNetworkManager += NetManager;//отдадим объект по NetManager
     }
 
     private void OnDisable()//отписки
     {
         OnGetCamera -= GetDataCamera;
         OnGetPlayer -= GetDataPlayer;
+        OnGetObjectHash -= GetDataHash;
+        OnGetNetworkManager -= NetManager;
     }
 
     private RegistratorConstruction GetDataPlayer()
@@ -43,6 +48,29 @@ public class RegistratorExecutor :RegistratorGo
         return new RegistratorConstruction();
     }
 
+    private RegistratorConstruction GetDataHash(int hash)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i].Hash == hash)
+            {
+                return list[i];
+            }
+        }
+        return new RegistratorConstruction();
+    }
+
+    private RegistratorConstruction NetManager()
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i].NetworkManager != null)
+            {
+                return list[i];
+            }
+        }
+        return new RegistratorConstruction();
+    }
 
     //private Transform OutPos { get; set; }
 

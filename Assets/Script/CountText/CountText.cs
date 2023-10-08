@@ -1,53 +1,54 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
+using static EventManager;
 
 public class CountText : MonoBehaviour
 {
-    //event
-    public static event Func<RegistratorConstruction> OnGetDataPlayer;
-
     [SerializeField] private Text textHealt;
     [SerializeField] private Text textCountBull;
 
-    private RegistratorConstruction rezultListPlayer;
-
-    private bool isRun;
-    void Start()
+    private RegistratorConstruction rezultPlayer;
+    private bool isRun=false;
+    private void Awake()
     {
-        //rezultListPlayer = GetInput();
+        OnTrigerCount += UpDateCount;
     }
-    //private RegistratorConstruction GetInput()
-    //{
-    //    return (RegistratorConstruction)(OnGetDataPlayer?.Invoke());
-    //}
 
-    void Update()
+    private void OnDisable()
     {
+        OnTrigerCount -= UpDateCount;
+    }
 
-        //ищем если не нашли
-        if (isRun == false)
+    private void OnDestroy()
+    {
+        OnTrigerCount += UpDateCount;
+    }
+
+    private void UpDateCount()
+    {
+        if (rezultPlayer.Healt != null)
         {
-            //rezultListPlayer = GetInput();
-            //if (rezultListPlayer.PhotonIsMainGO)
-            //{
-            //    if (rezultListPlayer.UserInput != null)
-            //    {
-            //        isRun = rezultListPlayer.PhotonIsMainGO;
-            //    }
-            //}
-
+            textHealt.text = $"{rezultPlayer.Healt.HealtCount}";
         }
 
-        if (isRun)
+        if (rezultPlayer.ShootPlayer != null)
         {
-            textHealt.text = $"{rezultListPlayer.PlayerHealt.HealtCount}";
+            textCountBull.text = $"{rezultPlayer.ShootPlayer.CountBull}";
+        }
+    }
 
-            if (rezultListPlayer.ShootPlayer != null)
+    private void FixedUpdate()
+    {
+        if (!isRun)
+        {
+            rezultPlayer = GetPlayer();
+            if (rezultPlayer.Healt != null && rezultPlayer.ShootPlayer != null)
             {
-                textCountBull.text = $"{rezultListPlayer.ShootPlayer.CountBull}";
+                textHealt.text = $"{rezultPlayer.Healt.HealtCount}";
+                textCountBull.text = $"{rezultPlayer.ShootPlayer.CountBull}";
+                isRun = true;
             }
         }
-
     }
 }
+

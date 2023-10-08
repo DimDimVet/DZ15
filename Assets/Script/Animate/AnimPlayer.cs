@@ -32,14 +32,13 @@ public class AnimPlayer : MonoBehaviour
 
     private bool ControlGO()
     {
-
         if (rezultInput.Healt != null)
         {
             return rezultInput.Healt.Dead;
         }
-        if (rezultInput.PlayerHealt != null)
+        if (rezultInput.Healt != null)
         {
-            return rezultInput.PlayerHealt.Dead;
+            return rezultInput.Healt.Dead;
         }
         return false;
     }
