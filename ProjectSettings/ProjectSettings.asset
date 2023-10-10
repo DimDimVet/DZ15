@@ -833,10 +833,10 @@ PlayerSettings:
     Build: 0
     Game Performance: 0
     Legacy Analytics: 0
-    Purchasing: 1
+    Purchasing: 0
     UDP: 0
     UNet: 1
-    Unity Ads: 0
+    Unity Ads: 1
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -856,11 +856,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 0bac125d-4c56-4ee1-bc05-32581da52122
+  cloudProjectId: 52cc8aaa-31d2-4171-94be-e2738926a14d
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: DZ13v2_ (3)
-  organizationId: veterdim
+  projectName: TEstDZ
+  organizationId: testdz
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
