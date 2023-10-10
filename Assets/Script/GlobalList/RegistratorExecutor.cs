@@ -12,6 +12,7 @@ public class RegistratorExecutor :RegistratorGo
         OnGetPlayer += GetDataPlayer;//отдадим Player
         OnGetObjectHash += GetDataHash;//отдадим объект по hash
         OnGetNetworkManager += NetManager;//отдадим объект по NetManager
+        OnGetInventory += Inventory;//отдадим объект по Inventory
     }
 
     private void OnDisable()//отписки
@@ -20,6 +21,7 @@ public class RegistratorExecutor :RegistratorGo
         OnGetPlayer -= GetDataPlayer;
         OnGetObjectHash -= GetDataHash;
         OnGetNetworkManager -= NetManager;
+        OnGetInventory -= Inventory;
     }
 
     private RegistratorConstruction GetDataPlayer()
@@ -65,6 +67,18 @@ public class RegistratorExecutor :RegistratorGo
         for (int i = 0; i < list.Count; i++)
         {
             if (list[i].NetworkManager != null)
+            {
+                return list[i];
+            }
+        }
+        return new RegistratorConstruction();
+    }
+
+    private RegistratorConstruction Inventory()
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i].ControlInventory != null)
             {
                 return list[i];
             }

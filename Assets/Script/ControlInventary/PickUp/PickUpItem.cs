@@ -1,22 +1,18 @@
-using System;
 using UnityEngine;
+using static EventManager;
 
 public class PickUpItem : MonoBehaviour
 {
-    //event
-    public static event Func<int,RegistratorConstruction> OnGetData;
-    public static event Func<RegistratorConstruction> OnInventory;
-    public static event Func<RegistratorConstruction> OnGetNetManager;
-
     public PickSettings PickSettings;
+
     [SerializeField] private GameObject objectImg;
-    private GameObject objectGrid;
 
     private Collider collaider;
 
-    private RegistratorConstruction rezultList;
-    private RegistratorConstruction rezultGrid;
-    private RegistratorConstruction rezultNetManager;
+    private RegistratorConstruction rezultGO;
+    private RegistratorConstruction rezultInventory;
+    private bool isRun;
+
     void Start()
     {
         collaider = gameObject.GetComponent<Collider>();
@@ -24,56 +20,80 @@ public class PickUpItem : MonoBehaviour
 
     }
 
-    private RegistratorConstruction GetData(int hash)
-    {
-        return (RegistratorConstruction)(OnGetData?.Invoke(hash));
-    }
-    private RegistratorConstruction Inventory()
-    {
-        return (RegistratorConstruction)(OnInventory?.Invoke());
-    }
-    private RegistratorConstruction GetNetManager()
-    {
-        return (RegistratorConstruction)(OnGetNetManager?.Invoke());
-    }
     private void OnTriggerEnter(Collider other)
     {
-        //if (PhotonView.Get(this.gameObject).IsMine)
-        //{
-            int tempHsh = other.gameObject.GetHashCode();
-            ExecutorCollision(tempHsh);
+        int tempHsh = other.gameObject.GetHashCode();
+        ExecutorCollision(tempHsh);
 
-            collaider.enabled = false;
-            DestoyGO();
-            //Destroy(gameObject, 1);
-        //}
+        collaider.enabled = false;
+        DestoyGO();
     }
-    private void ExecutorCollision(int hash)
+    private void ExecutorCollision(int _hash)
     {
-        rezultList = GetData(hash);
-
-        rezultGrid = Inventory();
-        objectGrid= rezultGrid.ControlInventory.gameObject;
-        //Healt
-       
-        if (rezultGrid.ControlInventory != null)
+        if (rezultGO.Hash == _hash)
         {
-            //Debug.Log("Лут взял - "+ rezultList.PhotonHash);
-            //if (rezultGrid.ControlInventory.GridPlater == rezultList.PhotonHash)
-            //{
-            //    GameObject.Instantiate(objectImg, rezultGrid.ControlInventory.gridTransform);
-            //}
-            
+           
+        }
+
+        if (rezultInventory.ControlInventory != null)
+        {
+            print("Лут взял - "+ rezultGO.Hash);
+            GameObject.Instantiate(objectImg, rezultInventory.ControlInventory.gridTransform);
         }
         else
         {
-            //Debug.Log("No Script" + rezultList.Name);
+            print("No Script" + rezultGO.Hash);
         }
     }
 
     public void DestoyGO()
     {
-        rezultNetManager = GetNetManager();
-        rezultNetManager.NetworkManager.DestroyThisLut(this.gameObject);
+        RegistratorConstruction rezult = GetNetworkManager();
+        if (rezult.NetworkManager != null)//объект созданный через фотон, убиваем через фотон
+        {
+            rezult.NetworkManager.DestroyThisGO(this.gameObject);
+        }
+    }
+
+    private void Activ()
+    {
+        if (/*PhotonView.Get(this.gameObject).IsMine &&*/ isRun)
+        {
+
+        }
+    }
+    private void GetConnectEvent()//получаем ращрешение по результату данных из листа
+    {
+        if (!isRun)//если общее разрешение на запуск false
+        {
+            rezultGO = GetPlayer();//получаем данные из листа
+            rezultInventory= GetInventory();
+
+            if (rezultGO.UserInput != null && rezultInventory.ControlInventory!=null)
+            {
+                isRun = true;
+            }
+            else
+            {
+                isRun = false;
+                return;
+            }
+        }
+        else
+        {
+            isRun = true;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (!isRun)//если нет разрешения, пытаемся подключать лист
+        {
+            GetConnectEvent();
+        }
+        else
+        {
+            Activ();
+        }
     }
 }

@@ -1,21 +1,15 @@
 using UnityEngine;
 using UnityEngine.Advertisements;
+using static EventManager;
 
 //Реклама Banner
-public class BannerAd : MonoBehaviour
+public class BannerAd : AdsInitializer
 {
     [SerializeField] BannerPosition bannerPosition;
 
     [SerializeField] string androidAdID = "Banner_Android";
     [SerializeField] string iOSAdID = "Banner_iOS";
     private string adID;
-
-    public bool start;
-
-    //private void Awake()
-    //{
-        
-    //}
 
     private void Start()
     {
@@ -24,13 +18,35 @@ public class BannerAd : MonoBehaviour
         Advertisement.Banner.SetPosition(bannerPosition);
     }
 
-    public void ShowAd()
+    private void OnEnable()
+    {
+        OnTrigerBannerAd += SwithBanner;
+    }
+
+    private void SwithBanner(bool _isStatus)
+    {
+        if (_isStatus)
+        {
+            ShowAd(_isStatus);
+        }
+        else
+        {
+            CloseAd(_isStatus);
+        }
+    }
+
+    private void ShowAd(bool _isStatus)
     {
         BannerLoadOptions optionsLoad = new BannerLoadOptions { loadCallback = OnBannerLoaded, errorCallback = OnBannerError };
         Advertisement.Banner.Load(adID, optionsLoad);
 
         BannerOptions optionsShow = new BannerOptions { clickCallback = OnBannerClicked, hideCallback = OnBannerHidden, showCallback = OnBannerShow };
         Advertisement.Banner.Show(adID, optionsShow);
+    }
+
+    private void CloseAd(bool _isStatus)
+    {
+        Advertisement.Banner.Hide(_isStatus);
     }
 
     private void OnBannerLoaded()
@@ -61,12 +77,4 @@ public class BannerAd : MonoBehaviour
     //за исключением новой переменной bannerPosition, которая отвечает за позицию расположения баннеров.
     //Эту позиции можно указать с помощью окна Inspector. Здесь так же, как и в двух других скриптах,
     //присутствует метод ShowAd() для вызова рекламы.
-    private void Update()
-    {
-        if (start)
-        {
-            ShowAd();
-            start=!start;
-        }
-    }
 }

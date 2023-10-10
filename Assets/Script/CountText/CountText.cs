@@ -9,6 +9,7 @@ public class CountText : MonoBehaviour
 
     private RegistratorConstruction rezultPlayer;
     private bool isRun=false;
+
     private void Awake()
     {
         OnTrigerCount += UpDateCount;
@@ -21,7 +22,7 @@ public class CountText : MonoBehaviour
 
     private void OnDestroy()
     {
-        OnTrigerCount += UpDateCount;
+        OnTrigerCount -= UpDateCount;
     }
 
     private void UpDateCount()
