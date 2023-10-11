@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028328, g: 0.22571322, b: 0.30692163, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -756,7 +756,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b79b5624d944058bd39aad2b90fb275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  productId: 1Lut
+  productId: Lut
   buttonType: 0
   consumePurchase: 1
   onTransactionsRestored:
@@ -1290,7 +1290,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u041A\u0443\u043F\u0438\u0442\u044C\n1\u043B\u0443\u0442"
+  m_text: "\u041A\u0443\u043F\u0438\u0442\u044C\n\u043B\u0443\u0442"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1377,6 +1377,7 @@ GameObject:
   m_Component:
   - component: {fileID: 868638385}
   - component: {fileID: 868638384}
+  - component: {fileID: 868638386}
   m_Layer: 0
   m_Name: Store
   m_TagString: Untagged
@@ -1396,8 +1397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0801fbb989b95e43b54da692b2759ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonPurchase: {fileID: 571801149}
-  PurchaseID1: 100Gold
+  PurchaseID1: Lut
 --- !u!4 &868638385
 Transform:
   m_ObjectHideFlags: 0
@@ -1413,6 +1413,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &868638386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868638383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82c5ac2ec6cf3b740b9f62b366737fdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectImg: {fileID: 9095401065806357871, guid: 37724f2c514f94548ac5a62c66fce020, type: 3}
 --- !u!1 &894938857
 GameObject:
   m_ObjectHideFlags: 0

@@ -30,6 +30,7 @@ public class RewardedAds : AdsInitializer
         if (showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
         {
             // тут код для добавления бонусов игроку.
+            IAPController(1);
             print("Юнити завершил показ рекламы, и добавил бонусы игроку.");
         }
     }

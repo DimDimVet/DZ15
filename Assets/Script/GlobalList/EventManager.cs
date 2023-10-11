@@ -76,4 +76,11 @@ public class EventManager
         OnTrigerBannerAd?.Invoke(_isStatus);//запросим из пространства лист
     }
 
+    //тригер рекламы InterstitialAds
+    public delegate void TrigerIAPController(int _count);
+    public static event TrigerIAPController OnTrigerIAPController;//запросим из пространства лист
+    public static void IAPController(int _count)
+    {
+        OnTrigerIAPController?.Invoke(_count);//запросим из пространства лист
+    }
 }

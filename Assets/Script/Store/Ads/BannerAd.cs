@@ -13,7 +13,6 @@ public class BannerAd : AdsInitializer
 
     private void Start()
     {
-        print("BannerAd start");
         adID = (Application.platform == RuntimePlatform.IPhonePlayer) ? iOSAdID : androidAdID;
         Advertisement.Banner.SetPosition(bannerPosition);
     }

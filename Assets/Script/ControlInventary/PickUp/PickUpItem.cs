@@ -17,7 +17,6 @@ public class PickUpItem : MonoBehaviour
     {
         collaider = gameObject.GetComponent<Collider>();
         collaider.isTrigger = true;
-
     }
 
     private void OnTriggerEnter(Collider other)

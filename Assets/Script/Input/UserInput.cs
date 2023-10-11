@@ -5,7 +5,7 @@ public class UserInput : MonoBehaviour
     private InputData inputData;//Передадим данные
     public InputData InputData { get { return inputData; } /*set { inputData = value; }*/ }
 
-    private bool isMove;//разрешение на событие движения
+    private bool isMove=true;//разрешение на событие движения
     public bool IsMove { get { return isMove; } /*set { isMove = value; }*/ }
 
     private MapCurrent inputAction;//Кэш переменной класса MapCurrent(new input)
@@ -21,49 +21,49 @@ public class UserInput : MonoBehaviour
             inputAction.UIMap.WASD.performed += context =>
             {
                 inputData.Move = context.ReadValue<Vector2>();
-                if (context.ReadValue<Vector2>() != null) { isMove = true; } else{isMove = false;}
+                //if (context.ReadValue<Vector2>() != null) { isMove = true; } else{isMove = false;}
             };
             inputAction.UIMap.WASD.started += context =>
             {
                 inputData.Move = context.ReadValue<Vector2>();
-                if (context.ReadValue<Vector2>() != null) { isMove = true; }else{isMove = false;}
+                //if (context.ReadValue<Vector2>() != null) { isMove = true; }else{isMove = false;}
             };
             inputAction.UIMap.WASD.canceled += context =>
             {
                 inputData.Move = context.ReadValue<Vector2>();
-                if (context.ReadValue<Vector2>() != null) { isMove = false; }else{isMove = true;}
+                //if (context.ReadValue<Vector2>() != null) { isMove = false; }else{isMove = true;}
             };
 
             inputAction.Map.WASD.performed += context =>
             {
                 inputData.Move = context.ReadValue<Vector2>();
-                if (context.ReadValue<Vector2>() != null) { isMove = true; } else { isMove = false; }
+                //if (context.ReadValue<Vector2>() != null) { isMove = true; } else { isMove = false; }
             };
             inputAction.Map.WASD.started += context =>
             {
                 inputData.Move = context.ReadValue<Vector2>();
-                if (context.ReadValue<Vector2>() != null) { isMove = true; }else{isMove = false;}
+                //if (context.ReadValue<Vector2>() != null) { isMove = true; }else{isMove = false;}
             };
             inputAction.Map.WASD.canceled += context =>
             {
                 inputData.Move = context.ReadValue<Vector2>();
-                if (context.ReadValue<Vector2>() != null) { isMove = false; }else{isMove = true;}
+                //if (context.ReadValue<Vector2>() != null) { isMove = false; }else{isMove = true;}
             };
 
             inputAction.Map.Look.performed += context =>
             {
                 inputData.Mouse = context.ReadValue<Vector2>();
-                if (context.ReadValue<Vector2>() != null) { isMove = true; }else{isMove = false;}
+                //if (context.ReadValue<Vector2>() != null) { isMove = true; }else{isMove = false;}
             };
             inputAction.Map.Look.started += context =>
             {
                 inputData.Mouse = context.ReadValue<Vector2>();
-                if (context.ReadValue<Vector2>() != null) { isMove = true; }else{isMove = false;}
+                //if (context.ReadValue<Vector2>() != null) { isMove = true; }else{isMove = false;}
             };
             inputAction.Map.Look.canceled += context =>
             {
                 inputData.Mouse = context.ReadValue<Vector2>();
-                if (context.ReadValue<Vector2>() != null) { isMove = false; }else{isMove = true;}
+                //if (context.ReadValue<Vector2>() != null) { isMove = false; }else{isMove = true;}
             };
 
             inputAction.Map.Shoot.performed += context => { inputData.Shoot = context.ReadValue<float>(); };
