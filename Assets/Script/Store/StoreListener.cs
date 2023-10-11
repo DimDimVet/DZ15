@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
 
-public class StoreListener : IStoreListener
+public class StoreListener /*: IStoreListener*/
 {
     public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
     {

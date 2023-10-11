@@ -1,16 +1,19 @@
 using UnityEngine;
+using UnityEngine.Purchasing;
+using UnityEngine.Purchasing.Extension;
 using UnityEngine.UI;
 
 public class IAPController : MonoBehaviour
 {
     [SerializeField] Button buttonPurchase;
     [SerializeField] string PurchaseID1;
-    private void OnEnable()
+    public void OnPurchaseCompleted(Product product)
     {
-        buttonPurchase.onClick.AddListener(OnPurchaseCompleted);
+        print($"Куплен {PurchaseID1}");
     }
-    public void OnPurchaseCompleted()
+
+    public void OnPurchaseFailure(Product product, PurchaseFailureDescription reason)
     {
-        print(PurchaseID1);
+        print($"Покупка продукта {product.definition.id} ошибка {reason}");
     }
 }
